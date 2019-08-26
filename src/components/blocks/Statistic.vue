@@ -42,7 +42,8 @@ export default {
       {
         text: "",
         sortable: false,
-        value: "name"
+        value: "name",
+        width: "30%"
       },
       { text: i18n.t("statistics.ghg"), value: "ghg" },
       { text: i18n.t("statistics.electricity"), value: "electricity" },
