@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col>
         <p class="subheading text-center font-weight-regular">{{ $t('desc_page') }}</p>
