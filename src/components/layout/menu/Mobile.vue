@@ -1,7 +1,7 @@
 <template>
   <v-list dense>
     <v-list-item
-      href="https://dapp.ipci.io/#/dao/market/0x9d4927a4bf922fe1539b07968ea03f20205e53e6"
+      href="https://dapp.ipci.io/#/dao/market/0xd86E7d6322F38646A37e2a713723d8B15347Be99"
       target="_blank"
     >
       <v-list-item-content>
@@ -18,10 +18,28 @@
         <v-list-item-title>{{$t('menu.statistics')}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-    <v-list-item>
+    <v-list-item v-if="isAuthenticated" :to="{name:'add'}">
+      <v-list-item-content>
+        <v-list-item-title>{{$t('menu.add')}}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item v-if="!isAuthenticated" :to="{name:'login'}">
       <v-list-item-content>
         <v-list-item-title>{{$t('menu.login')}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+    <v-list-item v-if="isAuthenticated" @click="logout">
+      <v-list-item-content>
+        <v-list-item-title>{{$t('menu.logout')}}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
   </v-list>
 </template>
+
+<script>
+import mixin from "./Mixin";
+
+export default {
+  mixins: [mixin]
+};
+</script>

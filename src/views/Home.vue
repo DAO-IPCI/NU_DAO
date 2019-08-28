@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import Map from "./blocks/Map";
-import Statistic from "./blocks/Statistic";
-import Resume from "./blocks/Resume";
-import News from "./blocks/News";
+import Map from "@/components/blocks/Map";
+import Statistic from "@/components/blocks/Statistic";
+import Resume from "@/components/blocks/Resume";
+import News from "@/components/blocks/News";
 
 export default {
   components: { Map, Statistic, Resume, News }

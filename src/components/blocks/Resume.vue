@@ -4,6 +4,8 @@
     <v-card-text style="height: 100%">
       <div class="d-flex justify-space-between align-stretch" style="height: 100%" flat tile>
         <div class="pa-5 text-center align-self-center">
+          <img src="assets/i/fossil.png" />
+          <br />
           {{$t('resume.enemy')}}
           <br />
           <div class="display-1 mt-2">
@@ -14,6 +16,8 @@
         </div>
         <div class="align-self-center primary" style="flex: 1 1 auto;height:1px;"></div>
         <div class="pa-5 text-center align-self-center">
+          <img src="assets/i/friend.png" />
+          <br />
           {{$t('resume.friend')}}
           <br />
           <div class="display-1 mt-2">

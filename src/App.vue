@@ -2,24 +2,25 @@
   <v-app>
     <Header />
     <v-content>
-      <Page />
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
 import Header from "./components/layout/Header";
-import Page from "./components/Page";
 
 export default {
   components: {
-    Header,
-    Page
+    Header
   },
   mounted() {
+    if (this.$store.getters["auth/isAuthenticated"]) {
+      this.$store.dispatch("auth/user");
+    }
     this.$store.dispatch("data/members");
     this.$store.dispatch("data/load", false);
-    this.$store.dispatch("data/load", true);
+    // this.$store.dispatch("data/load", true);
     this.$store.dispatch("news/load");
   }
 };

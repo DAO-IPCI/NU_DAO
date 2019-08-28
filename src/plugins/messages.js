@@ -4,15 +4,16 @@ import vuetify_ru from 'vuetify/es5/locale/ru';
 export default {
   en: {
     $vuetify: vuetify_en,
-    title:
-      'NU DAO',
+    title: 'NU DAO',
     desc_page:
       'Nazarbayev University market system model for greenhouse gases emission reduction',
     menu: {
       marketplace: 'Marketplace',
       publications: 'Publications',
       statistics: 'Statistics',
-      login: 'Login'
+      add: 'Add',
+      login: 'Login',
+      logout: 'Logout'
     },
     map: {
       title: 'Carbon balance (to same month in 2018)',
@@ -36,15 +37,16 @@ export default {
   },
   ru: {
     $vuetify: vuetify_ru,
-    title:
-      'НУ ДАО',
+    title: 'НУ ДАО',
     desc_page:
       'Модель рыночной системы снижения выбросов парниковых газов Назарбаев Университета',
     menu: {
       marketplace: 'Торговая площадка',
       publications: 'Публикации',
       statistics: 'Статистика',
-      login: 'Войти'
+      add: 'Добавить',
+      login: 'Войти',
+      logout: 'Выйти'
     },
     map: {
       title: 'Углеродный баланс (к тому же месяцу 2018)',
