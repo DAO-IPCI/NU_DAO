@@ -1,11 +1,13 @@
 import api from './api';
 
 let date = null;
-let month = new Date().getMonth() + 1;
+const d = new Date();
+d.setMonth(d.getMonth() - 1);
+let month = d.getMonth() + 1;
 if (month < 10) {
   month = '0' + month;
 }
-date = month + '/' + new Date().getFullYear();
+date = month + '/' + d.getFullYear();
 
 // initial state
 const state = {
