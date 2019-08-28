@@ -7,13 +7,14 @@
             <v-toolbar-title>Новые данные</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">Date: {{month}}</v-col>
-              </v-row>
-            </v-container>
-            <v-divider />
             <v-form ref="form" v-model="valid" lazy-validation>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="monthForm" :rules="required" label="Date" type="text"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
               <div v-for="(row, i) in rows" :key="i">
                 <v-container>
                   <v-row>
@@ -59,6 +60,7 @@ import { mapGetters, mapState } from "vuex";
 export default {
   data() {
     return {
+      monthForm: "",
       success: false,
       request: false,
       valid: true,
@@ -82,6 +84,7 @@ export default {
     }
   },
   mounted() {
+    this.monthForm = this.month;
     this.init();
   },
   methods: {
@@ -119,7 +122,7 @@ export default {
         this.$store
           .dispatch("data/save", {
             author: this.profile.name,
-            month: this.month,
+            month: this.monthForm,
             records: records
           })
           .then(() => {
