@@ -1,6 +1,6 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-const url = 'https://simple.com/api/v1';
+const url = 'http://hbrz.khassanov.me/api/v1';
 
 const db = {
   members: [
@@ -13,106 +13,244 @@ const db = {
       name: 'Технопарк'
     }
   ],
-  electricity_all: [
-    {
-      id_member: 1,
-      value: 245
-    },
-    {
-      id_member: 2,
-      value: 504
-    }
-  ],
-  ghg_all: [
-    {
-      id_member: 1,
-      value: 1232
-    },
-    {
-      id_member: 2,
-      value: 1603
-    }
-  ],
-  finance_all: [
-    {
-      id_member: 1,
-      value: 23
-    },
-    {
-      id_member: 2,
-      value: 34
-    }
-  ],
   electricity: [
     {
-      id_member: 1,
-      value: 24
+      month: '01/1970',
+      records: [
+        { member_id: 1, consumption: 28341 },
+        { member_id: 2, consumption: 11243 },
+        { member_id: 3, consumption: 536 },
+        { member_id: 4, consumption: 113 },
+        { member_id: 5, consumption: 4243 }
+      ]
     },
     {
-      id_member: 2,
-      value: 50
+      month: '02/1970',
+      records: [
+        { member_id: 1, consumption: 28341 },
+        { member_id: 2, consumption: 11243 },
+        { member_id: 3, consumption: 536 },
+        { member_id: 4, consumption: 113 },
+        { member_id: 5, consumption: 4243 }
+      ]
+    },
+    {
+      month: '01/1971',
+      records: [
+        { member_id: 1, consumption: 28341 },
+        { member_id: 2, consumption: 11243 },
+        { member_id: 3, consumption: 536 },
+        { member_id: 4, consumption: 113 },
+        { member_id: 5, consumption: 4243 }
+      ]
+    },
+    {
+      month: '02/1971',
+      records: [
+        { member_id: 1, consumption: 28341 },
+        { member_id: 2, consumption: 11243 },
+        { member_id: 3, consumption: 536 },
+        { member_id: 4, consumption: 113 },
+        { member_id: 5, consumption: 4243 }
+      ]
+    },
+    {
+      month: '02/1972',
+      records: [
+        { member_id: 1, consumption: 28341 },
+        { member_id: 2, consumption: 11243 },
+        { member_id: 3, consumption: 536 },
+        { member_id: 4, consumption: 113 },
+        { member_id: 5, consumption: 4243 }
+      ]
     }
   ],
   ghg: [
     {
-      id_member: 1,
-      value: 159
+      month: '01/1970',
+      records: [
+        { member_id: 1, ghg: 28341 },
+        { member_id: 2, ghg: 11243 },
+        { member_id: 3, ghg: 536 },
+        { member_id: 4, ghg: 113 },
+        { member_id: 5, ghg: 4243 }
+      ]
     },
     {
-      id_member: 2,
-      value: 160
+      month: '02/1970',
+      records: [
+        { member_id: 1, ghg: 28341 },
+        { member_id: 2, ghg: 11243 },
+        { member_id: 3, ghg: 536 },
+        { member_id: 4, ghg: 113 },
+        { member_id: 5, ghg: 4243 }
+      ]
+    },
+    {
+      month: '01/1971',
+      records: [
+        { member_id: 1, ghg: 28341 },
+        { member_id: 2, ghg: 11243 },
+        { member_id: 3, ghg: 536 },
+        { member_id: 4, ghg: 113 },
+        { member_id: 5, ghg: 4243 }
+      ]
+    },
+    {
+      month: '02/1971',
+      records: [
+        { member_id: 1, ghg: 28341 },
+        { member_id: 2, ghg: 11243 },
+        { member_id: 3, ghg: 536 },
+        { member_id: 4, ghg: 113 },
+        { member_id: 5, ghg: 4243 }
+      ]
+    },
+    {
+      month: '02/1972',
+      records: [
+        { member_id: 1, ghg: 28341 },
+        { member_id: 2, ghg: 11243 },
+        { member_id: 3, ghg: 536 },
+        { member_id: 4, ghg: 113 },
+        { member_id: 5, ghg: 4243 }
+      ]
     }
   ],
   finance: [
     {
-      id_member: 1,
-      value: 5
+      month: '01/1970',
+      records: [
+        { member_id: 1, finance: 0 },
+        { member_id: 2, finance: 0 },
+        { member_id: 3, finance: 0 },
+        { member_id: 4, finance: 0 },
+        { member_id: 5, finance: 0 }
+      ]
     },
     {
-      id_member: 2,
-      value: 4
+      month: '02/1970',
+      records: [
+        { member_id: 1, finance: 0 },
+        { member_id: 2, finance: 0 },
+        { member_id: 3, finance: 0 },
+        { member_id: 4, finance: 0 },
+        { member_id: 5, finance: 0 }
+      ]
+    },
+    {
+      month: '01/1971',
+      records: [
+        { member_id: 1, finance: 0 },
+        { member_id: 2, finance: 0 },
+        { member_id: 3, finance: 0 },
+        { member_id: 4, finance: 0 },
+        { member_id: 5, finance: 0 }
+      ]
+    },
+    {
+      month: '02/1971',
+      records: [
+        { member_id: 1, finance: 0 },
+        { member_id: 2, finance: 0 },
+        { member_id: 3, finance: 0 },
+        { member_id: 4, finance: 0 },
+        { member_id: 5, finance: 0 }
+      ]
+    },
+    {
+      month: '02/1972',
+      records: [
+        { member_id: 1, finance: 0 },
+        { member_id: 2, finance: 0 },
+        { member_id: 3, finance: 0 },
+        { member_id: 4, finance: 0 },
+        { member_id: 5, finance: 0 }
+      ]
     }
   ]
 };
 
 function get(params) {
-  // eslint-disable-next-line no-console
-  console.log(url + params);
-  // return axios.get(url + params).then(r => {
-  //   return r.data;
+  return axios.get(url + params).then(r => {
+    return r.data;
+  });
+}
+function post(params, data) {
+  return axios.post(url + params, data);
+  // .then(r => {
+  //   console.log(r);
+  //   // return r.data;
   // });
 }
 export function getMembers() {
-  get('/members');
-  return new Promise(resolve => resolve(db.members));
+  return get('/members');
+  // return new Promise(resolve => resolve(db.members));
 }
 export function getElectricity(date = null) {
   if (date) {
-    get('/members/electricity/consumptions?date=' + date);
-    return new Promise(resolve => resolve(db.electricity));
+    return get('/members/electricity/consumptions?month=' + date);
+    // return new Promise(resolve => resolve(db.electricity));
   }
-  get('/members/electricity/consumptions');
-  return new Promise(resolve => resolve(db.electricity_all));
+  return get('/members/electricity/consumptions');
+  // return new Promise(resolve => resolve(db.electricity));
 }
 export function getGhg(date = null) {
   if (date) {
-    get('/members/ghg/balances?date=' + date);
-    return new Promise(resolve => resolve(db.ghg));
+    return get('/members/ghg/emissions?month=' + date);
+    // return new Promise(resolve => resolve(db.ghg));
   }
-  get('/members/ghg/balances');
-  return new Promise(resolve => resolve(db.ghg_all));
+  return get('/members/ghg/emissions');
+  // return new Promise(resolve => resolve(db.ghg));
 }
 export function getFinance(date = null) {
   if (date) {
-    get('/members/finance/balances?date=' + date);
+    // return get('/members/finance/balances?month=' + date);
     return new Promise(resolve => resolve(db.finance));
   }
-  get('/members/finance/balances');
-  return new Promise(resolve => resolve(db.finance_all));
+  // return get('/members/finance/balances');
+  return new Promise(resolve => resolve(db.finance));
 }
+export function save(data) {
+  return post('/members/electricity/consumptions', data);
+  // return new Promise(resolve => resolve(true));
+}
+
+const mocks = {
+  auth: {
+    POST: data => {
+      if (data.login === 'admin' && data.password === 'admin') {
+        return { token: 'This-is-a-mocked-token' };
+      }
+      throw new Error('err');
+    }
+  },
+  'user/me': {
+    GET: data => {
+      if (data.token === 'This-is-a-mocked-token') {
+        return { name: 'admin' };
+      }
+      throw new Error('err');
+    }
+  }
+};
+
+export const apiAuth = ({ url, method, data }) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        resolve(mocks[url][method || 'GET'](data));
+      } catch (err) {
+        reject(new Error(err));
+      }
+    }, 1000);
+  });
+};
+
 export default {
   getMembers,
   getElectricity,
   getGhg,
-  getFinance
+  getFinance,
+  save
 };

@@ -1,25 +1,37 @@
 import api from './api';
 
+let date = null;
+let month = new Date().getMonth() + 1;
+if (month < 10) {
+  month = '0' + month;
+}
+date = month + '/' + new Date().getFullYear();
+
 // initial state
 const state = {
-  members: [],
+  month: date,
+  members: [
+    // {
+    //   id: 1,
+    //   name: 'asd'
+    // }
+  ],
   electricity: {
-    all: [],
-    current: []
+    // 1: {
+    //   member_id: 1,
+    //   list: [{
+    //     month: '02/1920',
+    //     value: 123
+    //   }]
+    // }
   },
-  ghg: {
-    all: [],
-    current: []
-  },
-  finance: {
-    all: [],
-    current: []
-  }
+  ghg: {},
+  finance: {}
 };
 
 // getters
 const getters = {
-  member: state => (id, isAll = false) => {
+  member: state => (id, month = false) => {
     const member = state.members.find(item => {
       return item.id === id;
     });
@@ -29,79 +41,135 @@ const getters = {
       ghg: 0,
       finance: 0
     };
-    const electricity = state.electricity[isAll ? 'all' : 'current'].find(
-      item => {
-        return item.id_member === member.id;
+    if (month) {
+      if (state.electricity[id]) {
+        const e = state.electricity[id].list.find(item => {
+          return item.month === month;
+        });
+        if (e) {
+          result.electricity = e.value;
+        }
       }
-    );
-    if (electricity) {
-      result.electricity = electricity.value;
-    }
-    const ghg = state.ghg[isAll ? 'all' : 'current'].find(item => {
-      return item.id_member === member.id;
-    });
-    if (ghg) {
-      result.ghg = ghg.value;
-    }
-    const finance = state.finance[isAll ? 'all' : 'current'].find(item => {
-      return item.id_member === member.id;
-    });
-    if (finance) {
-      result.finance = finance.value;
+      if (state.ghg[id]) {
+        const g = state.ghg[id].list.find(item => {
+          return item.month === month;
+        });
+        if (g) {
+          result.ghg = g.value;
+        }
+      }
+      if (state.finance[id]) {
+        const f = state.finance[id].list.find(item => {
+          return item.month === month;
+        });
+        if (f) {
+          result.finance = f.value;
+        }
+      }
+    } else {
+      if (state.electricity[id]) {
+        state.electricity[id].list.forEach(item => {
+          result.electricity += item.value;
+        });
+      }
+      if (state.ghg[id]) {
+        state.ghg[id].list.forEach(item => {
+          result.ghg += item.value;
+        });
+      }
+      if (state.finance[id]) {
+        state.finance[id].list.forEach(item => {
+          result.finance += item.value;
+        });
+      }
     }
     return result;
   },
   current: (state, getters) => {
     return state.members.map(member => {
-      return getters.member(member.id, false);
+      return getters.member(member.id, state.month);
     });
   },
   all: (state, getters) => {
     return state.members.map(member => {
-      return getters.member(member.id, true);
+      return getters.member(member.id, false);
     });
   },
   min: state => {
-    let min = null;
-    state.ghg.current.forEach(item => {
-      if (min === null || item.value < min.value) {
-        min = item;
+    const d = {};
+    Object.values(state.electricity).forEach(item => {
+      d[item.member_id] = 0;
+      item.list.forEach(s => {
+        if (s.month === state.month) {
+          d[item.member_id] = s.value;
+        }
+      });
+    });
+    let max = null;
+    Object.keys(d).forEach(member_id => {
+      if (max === null || d[member_id] < max.value) {
+        max = {
+          member: '-',
+          member_id: Number(member_id),
+          value: d[member_id]
+        };
       }
     });
-    if (!min) {
+    if (max === null) {
       return {
         member: '-',
+        member_id: 0,
         value: 0
       };
     }
     const member = state.members.find(item => {
-      return item.id === min.id_member;
+      return item.id === max.member_id;
     });
-    return {
-      member: member.name,
-      value: min.value
-    };
+    if (member) {
+      return {
+        ...max,
+        member: member.name
+      };
+    }
+    return max;
   },
   max: state => {
+    const d = {};
+    Object.values(state.electricity).forEach(item => {
+      d[item.member_id] = 0;
+      item.list.forEach(s => {
+        if (s.month === state.month) {
+          d[item.member_id] = s.value;
+        }
+      });
+    });
     let max = null;
-    state.ghg.current.forEach(item => {
-      if (max === null || item.value > max.value) {
-        max = item;
+    Object.keys(d).forEach(member_id => {
+      if (max === null || d[member_id] > max.value) {
+        max = {
+          member: '-',
+          member_id: Number(member_id),
+          value: d[member_id]
+        };
       }
     });
-    if (!max) {
+    if (max === null) {
       return {
         member: '-',
+        member_id: 0,
         value: 0
       };
     }
     const member = state.members.find(item => {
-      return item.id === max.id_member;
+      return item.id === max.member_id;
     });
-    return {
-      member: member.name,
-      value: max.value
-    };
+    if (member) {
+      return {
+        ...max,
+        member: member.name
+      };
+    }
+    return max;
   }
 };
 
@@ -111,21 +179,44 @@ const actions = {
     const members = await api.getMembers();
     commit('members', members);
   },
-  async load({ commit }, isAll = false) {
-    let date = null;
-    if (!isAll) {
-      let month = new Date().getMonth() + 1;
-      if (month < 10) {
-        month = '0' + month;
-      }
-      date = month + '/' + new Date().getFullYear();
+  async load({ dispatch }) {
+    dispatch('loadByType', 'electricity');
+    dispatch('loadByType', 'ghg');
+    dispatch('loadByType', 'finance');
+  },
+  async loadByType({ commit }, type) {
+    let method;
+    let field;
+    if (type === 'electricity') {
+      method = 'getElectricity';
+      field = 'consumption';
+    } else if (type === 'ghg') {
+      method = 'getGhg';
+      field = 'ghg_emission';
+    } else if (type === 'finance') {
+      method = 'getFinance';
+      field = 'finance';
     }
-    const electricity = await api.getElectricity(date);
-    commit('electricity', { isAll, electricity });
-    const ghg = await api.getGhg(date);
-    commit('ghg', { isAll, ghg });
-    const finance = await api.getFinance(date);
-    commit('finance', { isAll, finance });
+    const data = await api[method]();
+    const result = {};
+    data.forEach(row => {
+      row.records.forEach(item => {
+        if (!result[item.member_id]) {
+          result[item.member_id] = {
+            member_id: item.member_id,
+            list: []
+          };
+        }
+        result[item.member_id].list.push({
+          month: row.month,
+          value: item[field]
+        });
+      });
+    });
+    commit('setData', { type, data: result });
+  },
+  save(_, data = false) {
+    return api.save(data);
   }
 };
 
@@ -134,45 +225,35 @@ const mutations = {
   members(state, members) {
     state.members = members;
   },
-  electricity(state, { isAll, electricity }) {
-    if (isAll) {
-      state.electricity = {
-        ...state.electricity,
-        all: electricity
-      };
-    } else {
-      state.electricity = {
-        ...state.electricity,
-        current: electricity
-      };
-    }
-  },
-  ghg(state, { isAll, ghg }) {
-    if (isAll) {
-      state.ghg = {
-        ...state.ghg,
-        all: ghg
-      };
-    } else {
-      state.ghg = {
-        ...state.ghg,
-        current: ghg
-      };
-    }
-  },
-  finance(state, { isAll, finance }) {
-    if (isAll) {
-      state.finance = {
-        ...state.finance,
-        all: finance
-      };
-    } else {
-      state.finance = {
-        ...state.finance,
-        current: finance
-      };
-    }
+  setData(state, { type, data }) {
+    state[type] = data;
   }
+  // ghg(state, { isAll, ghg }) {
+  //   if (isAll) {
+  //     state.ghg = {
+  //       ...state.ghg,
+  //       all: ghg
+  //     };
+  //   } else {
+  //     state.ghg = {
+  //       ...state.ghg,
+  //       current: ghg
+  //     };
+  //   }
+  // },
+  // finance(state, { isAll, finance }) {
+  //   if (isAll) {
+  //     state.finance = {
+  //       ...state.finance,
+  //       all: finance
+  //     };
+  //   } else {
+  //     state.finance = {
+  //       ...state.finance,
+  //       current: finance
+  //     };
+  //   }
+  // }
 };
 
 export default {
