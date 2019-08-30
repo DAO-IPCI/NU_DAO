@@ -114,7 +114,7 @@ const getters = {
   },
   min: state => {
     const d = {};
-    Object.values(state.electricity).forEach(item => {
+    Object.values(state.ghg_balance).forEach(item => {
       d[item.member_id] = 0;
       item.list.forEach(s => {
         if (s.month === state.month) {
@@ -152,7 +152,7 @@ const getters = {
   },
   max: state => {
     const d = {};
-    Object.values(state.electricity).forEach(item => {
+    Object.values(state.ghg_balance).forEach(item => {
       d[item.member_id] = 0;
       item.list.forEach(s => {
         if (s.month === state.month) {
