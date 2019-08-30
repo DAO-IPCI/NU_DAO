@@ -12,7 +12,21 @@
           :sort-desc="true"
           :headers="headers"
           :items="current"
-        ></v-data-table>
+        >
+          <template v-slot:item.name="{ item }">
+            <img
+              :src="`assets/i/${getIcon(item.ghg_balance)}`"
+              style="vertical-align: middle;margin-right: 8px;"
+            />
+            {{ item.name }}
+          </template>
+          <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
+          <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
+          <template v-slot:item.ghg="{ item }">{{ Math.round(item.ghg) }}</template>
+          <template v-slot:item.ghg_balance="{ item }">
+            <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
+          </template>
+        </v-data-table>
       </v-tab-item>
       <v-tab-item>
         <v-data-table
@@ -21,7 +35,21 @@
           :sort-desc="true"
           :headers="headers"
           :items="all"
-        ></v-data-table>
+        >
+          <template v-slot:item.name="{ item }">
+            <img
+              :src="`assets/i/${getIcon(item.ghg_balance)}`"
+              style="vertical-align: middle;margin-right: 8px;"
+            />
+            {{ item.name }}
+          </template>
+          <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
+          <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
+          <template v-slot:item.ghg="{ item }">{{ Math.round(item.ghg) }}</template>
+          <template v-slot:item.ghg_balance="{ item }">
+            <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
+          </template>
+        </v-data-table>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -45,10 +73,23 @@ export default {
         value: "name",
         width: "30%"
       },
-      { text: i18n.t("statistics.ghg"), value: "ghg" },
+      { text: i18n.t("statistics.finance"), value: "finance" },
       { text: i18n.t("statistics.electricity"), value: "electricity" },
-      { text: i18n.t("statistics.finance"), value: "finance" }
+      { text: i18n.t("statistics.ghg"), value: "ghg" },
+      { text: i18n.t("statistics.carbon_balance"), value: "ghg_balance" }
     ]
-  })
+  }),
+  methods: {
+    getIcon(ghg_balance) {
+      if (ghg_balance < -5) return "green.png";
+      else if (ghg_balance > -5 && ghg_balance < 5) return "orange.png";
+      else return "red.png";
+    },
+    getColor(ghg_balance) {
+      if (ghg_balance < -5) return "green";
+      else if (ghg_balance > -5 && ghg_balance < 5) return "orange";
+      else return "red";
+    }
+  }
 };
 </script>

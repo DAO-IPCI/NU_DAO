@@ -22,9 +22,10 @@ export default {
     statistics: {
       current_rating: 'This month tops',
       all_rating: 'All time tops',
-      ghg: 'GHG reduction, tCO2',
+      ghg: 'Ejection CO2, тонн',
       electricity: 'Electricity comsumed, кВт*ч',
-      finance: 'Balance, ₸'
+      finance: 'Balance, ₸',
+      carbon_balance: 'Carbon balance, tCO2'
     },
     resume: {
       title: 'Leaders of the Month',
@@ -55,9 +56,10 @@ export default {
     statistics: {
       current_rating: 'Текущий рейтинг',
       all_rating: 'Рейтинг за все время',
-      ghg: 'Снижение выбросов, tCO2',
+      ghg: 'Выбросов CO2, тонн',
       electricity: 'Потреблено электроэнергии, кВт * ч',
-      finance: 'Баланс, ₸'
+      finance: 'Баланс, ₸',
+      carbon_balance: 'Углеродный баланс, tCO2'
     },
     resume: {
       title: 'Лидеры месяца',

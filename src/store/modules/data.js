@@ -28,6 +28,7 @@ const state = {
     // }
   },
   ghg: {},
+  ghg_balance: {},
   finance: {}
 };
 
@@ -41,6 +42,7 @@ const getters = {
       name: member.name,
       electricity: 0,
       ghg: 0,
+      ghg_balance: 0,
       finance: 0
     };
     if (month) {
@@ -60,6 +62,14 @@ const getters = {
           result.ghg = g.value;
         }
       }
+      if (state.ghg_balance[id]) {
+        const g = state.ghg_balance[id].list.find(item => {
+          return item.month === month;
+        });
+        if (g) {
+          result.ghg_balance = g.value;
+        }
+      }
       if (state.finance[id]) {
         const f = state.finance[id].list.find(item => {
           return item.month === month;
@@ -77,6 +87,11 @@ const getters = {
       if (state.ghg[id]) {
         state.ghg[id].list.forEach(item => {
           result.ghg += item.value;
+        });
+      }
+      if (state.ghg_balance[id]) {
+        state.ghg_balance[id].list.forEach(item => {
+          result.ghg_balance += item.value;
         });
       }
       if (state.finance[id]) {
@@ -184,6 +199,7 @@ const actions = {
   async load({ dispatch }) {
     dispatch('loadByType', 'electricity');
     dispatch('loadByType', 'ghg');
+    dispatch('loadByType', 'ghg_balance');
     dispatch('loadByType', 'finance');
   },
   async loadByType({ commit }, type) {
@@ -198,6 +214,9 @@ const actions = {
     } else if (type === 'finance') {
       method = 'getFinance';
       field = 'finance';
+    } else if (type === 'ghg_balance') {
+      method = 'getGhgBalances';
+      field = 'ghg_balance';
     }
     const data = await api[method]();
     const result = {};
@@ -230,32 +249,6 @@ const mutations = {
   setData(state, { type, data }) {
     state[type] = data;
   }
-  // ghg(state, { isAll, ghg }) {
-  //   if (isAll) {
-  //     state.ghg = {
-  //       ...state.ghg,
-  //       all: ghg
-  //     };
-  //   } else {
-  //     state.ghg = {
-  //       ...state.ghg,
-  //       current: ghg
-  //     };
-  //   }
-  // },
-  // finance(state, { isAll, finance }) {
-  //   if (isAll) {
-  //     state.finance = {
-  //       ...state.finance,
-  //       all: finance
-  //     };
-  //   } else {
-  //     state.finance = {
-  //       ...state.finance,
-  //       current: finance
-  //     };
-  //   }
-  // }
 };
 
 export default {

@@ -203,6 +203,14 @@ export function getGhg(date = null) {
   return get('/members/ghg/emissions');
   // return new Promise(resolve => resolve(db.ghg));
 }
+export function getGhgBalances(date = null) {
+  if (date) {
+    return get('/members/ghg/balances?month=' + date);
+    // return new Promise(resolve => resolve(db.ghg));
+  }
+  return get('/members/ghg/balances');
+  // return new Promise(resolve => resolve(db.ghg));
+}
 export function getFinance(date = null) {
   if (date) {
     // return get('/members/finance/balances?month=' + date);
@@ -251,6 +259,7 @@ export default {
   getMembers,
   getElectricity,
   getGhg,
+  getGhgBalances,
   getFinance,
   save
 };
