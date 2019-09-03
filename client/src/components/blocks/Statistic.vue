@@ -16,7 +16,7 @@
           <template v-slot:item.name="{ item }">
             <img
               :src="`assets/i/${getIcon(item.ghg_balance)}`"
-              style="vertical-align: middle;margin-right: 8px;"
+              style="width: 22px;vertical-align: middle;margin-right: 5px;"
             />
             {{ item.name }}
           </template>
