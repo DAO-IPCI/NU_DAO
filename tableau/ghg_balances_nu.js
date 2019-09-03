@@ -8,7 +8,7 @@
             dataType: tableau.dataTypeEnum.int
         }, {
             id: "balance",
-            dataType: tableau.dataTypeEnum.string
+            dataType: tableau.dataTypeEnum.int
         }];
 
         var tableSchema = {
@@ -21,8 +21,9 @@
 
     myConnector.getData = function(table, doneCallback) {
         tableau.log("Fetching data");
-        server = "hbrz.khassanov.me:80";
-        month = ("0" + (today.getMonth())).slice(-2) + "/" + today.getFullYear(); // prev month
+        var server = "hbrz.khassanov.me:80";
+        var today = new Date();
+        var month = ("0" + (today.getMonth())).slice(-2) + "/" + today.getFullYear(); // prev month
         $.getJSON("http://" + server + "/api/v1/members/ghg/balances?month=" + month, function(resp) {
             tableau.log("Recieved:");
             tableau.log(resp);

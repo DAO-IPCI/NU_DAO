@@ -11,3 +11,6 @@ chmod u+rx ./start.sh
 source ./venv-py37/bin/activate
 ./start.sh
 ```
+
+### Test
+Postman API requests: https://documenter.getpostman.com/view/1916785/SVfTN6wX
