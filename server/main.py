@@ -5,20 +5,19 @@ from datetime import datetime
 import logging
 from typing import List
 
-
 from fastapi import FastAPI, Query, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import motor.motor_asyncio
 
+import ipci
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-
 config =  configparser.ConfigParser()
 config.read("nudao.cfg")
-
 
 DATABASE_URI = config.get("database", "connection_string")
 DATABASE_NAME = config.get("database", "name")
@@ -92,10 +91,10 @@ async def calc_ghg_emission(electricity_consumption_wth, emission_factor):
 @app.get("/api/v1/members/electricity/consumptions")
 async def read_electricity_consumptions(month = Query(None, regex="^\d\d/\d{4}$")):
     logger.info(f"Reading {month if month else 'all'} consupmtions")
-    consumption = await _get_consumption_reports(month)
-    if not consumption:
+    consumptions = await _get_consumption_reports(month)
+    if not consumptions:
         raise HTTPException(status_code=204)
-    return consumption
+    return consumptions
 
 
 @app.post("/api/v1/members/electricity/consumptions")
@@ -103,7 +102,7 @@ async def create_report(report: ConsumptionReport):
     now = datetime.now()
     logger.info(f"New report from {report.author} with {len(report.records)} records")
     logger.info(f"{report.dict()}")
-    ret = await db.reports.insert_one(report.dict())
+    await db.reports.insert_one(report.dict())
     return
 
 
@@ -149,4 +148,10 @@ async def read_ghg_emissions(month = Query(None, regex="^\d\d/\d{4}")):
 
 @app.get("/api/v1/members/finance/balances")
 async def read_financial_balances():
-    raise HTTPException(status_code=501)
+    balances = list()
+    members = await db.members.find().to_list(length=10000)
+    for member in members:
+        addr = member["ethereum_address"]
+        balance = await ipci.get_mito_balance(addr)
+        balances.append({"member_id": member["id"], "MITO_balance": balance})
+    return balances
