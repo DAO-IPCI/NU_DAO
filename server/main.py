@@ -60,9 +60,7 @@ async def shutdown():
 
 @app.get("/api/v1/members")
 async def read_members():
-    members = await db.members.find().to_list(length=10000)
-    for m in members:
-        del m["_id"]
+    members = await db.members.find({}, {'_id': False}).to_list(length=10000)
     logger.debug(f"Members:\n{members}")
     return members
 
@@ -75,10 +73,8 @@ async def _get_consumption_reports(month: None) -> list:
             return None
         reports.append(report)
     else: # return all
-        reports = await db.reports.find().to_list(length=10000)
+        reports = await db.reports.find({}, {'_id': False, "author": False}).to_list(length=10000)
     for rep in reports:
-        del rep["_id"]
-        del rep["author"]
         for rec in rep["records"]:
             del rec["member_name"]
     return reports
@@ -148,10 +144,5 @@ async def read_ghg_emissions(month = Query(None, regex="^\d\d/\d{4}")):
 
 @app.get("/api/v1/members/finance/balances")
 async def read_financial_balances():
-    balances = list()
-    members = await db.members.find().to_list(length=10000)
-    for member in members:
-        addr = member["ethereum_address"]
-        balance = await ipci.get_mito_balance(addr)
-        balances.append({"member_id": member["id"], "MITO_balance": balance})
+    balances = await db.ipci.find({}, {'_id': False}).to_list(length=10000)
     return balances
