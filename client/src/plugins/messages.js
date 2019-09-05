@@ -22,15 +22,21 @@ export default {
     statistics: {
       current_rating: 'This month tops',
       all_rating: 'All time tops',
-      ghg: 'Ejection CO2, тонн',
-      electricity: 'Electricity comsumed, кВт*ч',
+      ghg: 'CO2 emission, ton',
+      electricity: 'Electricity comsumed, kWh',
       finance: 'Balance, ₸',
       carbon_balance: 'Carbon balance, tCO2'
     },
     resume: {
       title: 'Leaders of the Month',
       enemy: 'Fossil of the Month',
-      friend: 'Friend of Month'
+      friend: 'Friend of Month',
+      cumulative_result: 'Cumulative result',
+      univ_name: 'Nazarbayev University',
+      state_goal: 'Kazakhstan state goal',
+      annual: 'annual',
+      contribution: 'NU contribution',
+      global: 'Global goal to keep global warming under 1.5°'
     },
     news: {
       publications: 'Publications'
@@ -64,7 +70,13 @@ export default {
     resume: {
       title: 'Лидеры месяца',
       enemy: 'Поджигатель месяца',
-      friend: 'Друг месяца'
+      friend: 'Друг месяца',
+      cumulative_result: 'Совокупный результат',
+      univ_name: 'Назарбаев Университета',
+      state_goal: 'Национальная цель Казахстана',
+      annual: 'за год',
+      contribution: 'Вклад НУ',
+      global: 'Глобальная цель для удержания роста температуры до 1,5°'
     },
     news: {
       publications: 'Публикации'

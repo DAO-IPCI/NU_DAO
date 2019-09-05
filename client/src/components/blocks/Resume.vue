@@ -16,10 +16,10 @@
         </div>
         <div class="pa-5 text-center align-self-center">
           <img src="assets/i/libra.jpg" />
-          <br />Совокупный результат
+          <br />{{ $t('resume.cumulative_result') }}
           <br />
           <div class="display-1 mt-2">
-            <b>Назарбаев Университета</b>
+            <b>{{ $t('resume.univ_name') }}</b>
           </div>
           <br />
           <span class="primary--text title">{{min.value}}</span> tCO2
@@ -38,18 +38,18 @@
       </div>
       <div>
         <p>
-          Назиональная цель Казахстана:
-          <span class="green--text">-72тыс</span> tCO2 за год
+          {{ $t('resume.state_goal') }}:
+          <span class="green--text">-72 000</span> tCO2 {{ $t('resume.annual') }}
         </p>
         <p>
-          Вклад Назарбаев Университета:
-          <span class="green--text">-88тыс</span> tCO2
+          {{ $t('resume.contribution') }}:
+          <span class="green--text">-516</span> tCO2
         </p>
         <p>
-          Глобальная цель для удержания роста температуры до 15 градусов:
+          {{ $t('resume.global') }}:
           <span
             class="green--text"
-          >-36млн</span> tCO2
+          >-36 000 000</span> tCO2
         </p>
       </div>
     </v-card-text>
