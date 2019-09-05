@@ -10,8 +10,6 @@ from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import motor.motor_asyncio
 
-import ipci
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -21,6 +19,7 @@ config.read("nudao.cfg")
 
 DATABASE_URI = config.get("database", "connection_string")
 DATABASE_NAME = config.get("database", "name")
+TCO2_IN_ONE_VCU = float(config.get("ipci", "tCO2_in_one_VCU"))
 
 mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(DATABASE_URI)
 db = mongodb_client[DATABASE_NAME]
@@ -84,6 +83,10 @@ async def calc_ghg_emission(electricity_consumption_wth, emission_factor):
     return electricity_consumption_wth * emission_factor
 
 
+def vcu_to_tco2(vcu):
+    return vcu * TCO2_IN_ONE_VCU  # tCO2
+
+
 @app.get("/api/v1/members/electricity/consumptions")
 async def read_electricity_consumptions(month = Query(None, regex="^\d\d/\d{4}$")):
     logger.info(f"Reading {month if month else 'all'} consupmtions")
@@ -103,7 +106,7 @@ async def create_report(report: ConsumptionReport):
 
 
 @app.get("/api/v1/members/ghg/balances")
-async def read_ghg_balances(month = Query(..., regex="^\d\d/\d{4}$")):
+async def read_ghg_balances(month = Query(..., regex="^\d\d/\d{4}$"), mitigated: bool = True):
     logger.info(f"Reading {month} GHG balances")
 
     actual_report = await _get_consumption_reports(month)
@@ -123,6 +126,10 @@ async def read_ghg_balances(month = Query(..., regex="^\d\d/\d{4}$")):
         actual_consumption = record["consumption"]
         base_consumption = next(r for r in base_report["records"] if r["member_id"] == member_id)["consumption"]  # bad
         balance = (base_consumption - actual_consumption) * emission_factor
+        if mitigated:
+            vcu_burned = (await db.ipci.find_one({"member_id": member_id}, {"vcu_burned": 1}))["vcu_burned"] # VCU
+            ghg_mitigated = vcu_burned * vcu_to_tco2(vcu_burned) # tCO2
+            balance -= ghg_mitigated
         ghg_balances["balances"].append({"member_id": member_id, "balance": balance})
     return ghg_balances
 
@@ -144,5 +151,11 @@ async def read_ghg_emissions(month = Query(None, regex="^\d\d/\d{4}")):
 
 @app.get("/api/v1/members/finance/balances")
 async def read_financial_balances():
-    balances = await db.ipci.find({}, {'_id': False}).to_list(length=10000)
+    balances = await db.ipci.find({}, {"member_id": 1, "financial_balance": 1, "_id": 0}).to_list(length=10000)
     return balances
+
+
+@app.get("/api/v1/members/finance/carbon_units_burned")
+async def read_carbon_units_burned():
+    vcu_burned = await db.ipci.find({}, {"member_id": 1, "vcu_burned": 1, "_id": 0}).to_list(length=10000)
+    return vcu_burned
