@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../../tools/api';
 
 let date = null;
 const d = new Date();
@@ -27,9 +27,20 @@ const state = {
     //   }]
     // }
   },
-  ghg: {},
+  ghg_emission: {},
   ghg_balance: {},
-  finance: {}
+  finance: {
+    // 1: {
+    //   member_id: 1,
+    //   value: 123
+    // }
+  },
+  carbon_burn: {
+    // 1: {
+    //   member_id: 1,
+    //   value: 123
+    // }
+  }
 };
 
 // getters
@@ -41,7 +52,7 @@ const getters = {
     const result = {
       name: member.name,
       electricity: 0,
-      ghg: 0,
+      ghg_emission: 0,
       ghg_balance: 0,
       finance: 0
     };
@@ -54,12 +65,12 @@ const getters = {
           result.electricity = e.value;
         }
       }
-      if (state.ghg[id]) {
-        const g = state.ghg[id].list.find(item => {
+      if (state.ghg_emission[id]) {
+        const g = state.ghg_emission[id].list.find(item => {
           return item.month === month;
         });
         if (g) {
-          result.ghg = g.value;
+          result.ghg_emission = g.value;
         }
       }
       if (state.ghg_balance[id]) {
@@ -71,12 +82,10 @@ const getters = {
         }
       }
       if (state.finance[id]) {
-        const f = state.finance[id].list.find(item => {
-          return item.month === month;
-        });
-        if (f) {
-          result.finance = f.value;
-        }
+        result.finance = state.finance[id];
+      }
+      if (state.carbon_burn[id]) {
+        result.carbon_burn = state.carbon_burn[id];
       }
     } else {
       if (state.electricity[id]) {
@@ -84,9 +93,9 @@ const getters = {
           result.electricity += item.value;
         });
       }
-      if (state.ghg[id]) {
-        state.ghg[id].list.forEach(item => {
-          result.ghg += item.value;
+      if (state.ghg_emission[id]) {
+        state.ghg_emission[id].list.forEach(item => {
+          result.ghg_emission += item.value;
         });
       }
       if (state.ghg_balance[id]) {
@@ -95,9 +104,10 @@ const getters = {
         });
       }
       if (state.finance[id]) {
-        state.finance[id].list.forEach(item => {
-          result.finance += item.value;
-        });
+        result.finance = state.finance[id];
+      }
+      if (state.carbon_burn[id]) {
+        result.carbon_burn = state.carbon_burn[id];
       }
     }
     return result;
@@ -187,6 +197,17 @@ const getters = {
       };
     }
     return max;
+  },
+  sum: state => {
+    let sum = 0;
+    Object.values(state.ghg_balance).forEach(item => {
+      item.list.forEach(s => {
+        if (s.month === state.month) {
+          sum += Number(s.value);
+        }
+      });
+    });
+    return sum;
   }
 };
 
@@ -198,9 +219,44 @@ const actions = {
   },
   async load({ dispatch }) {
     dispatch('loadByType', 'electricity');
-    dispatch('loadByType', 'ghg');
-    dispatch('loadByType', 'ghg_balance');
-    dispatch('loadByType', 'finance');
+    dispatch('loadByType', 'ghg_emission');
+    // dispatch('loadByType', 'ghg_balance');
+    dispatch('loadGhgBalance');
+    dispatch('loadFinance');
+    dispatch('loadCarbonBurn');
+  },
+  async loadFinance({ commit }) {
+    const data = await api.getFinanceBalances();
+    const result = {};
+    data.forEach(item => {
+      result[item.member_id] = item.financial_balance;
+    });
+    commit('setData', { type: 'finance', data: result });
+  },
+  async loadCarbonBurn({ commit }) {
+    const data = await api.getCarbonBurn();
+    const result = {};
+    data.forEach(item => {
+      result[item.member_id] = item.vcu_burned;
+    });
+    commit('setData', { type: 'carbon_burn', data: result });
+  },
+  async loadGhgBalance({ commit }) {
+    let result = {};
+    const data = await api.getGhgBalances(date);
+    data.balances.forEach(item => {
+      if (!result[item.member_id]) {
+        result[item.member_id] = {
+          member_id: item.member_id,
+          list: []
+        };
+      }
+      result[item.member_id].list.push({
+        month: data.month,
+        value: item.balance
+      });
+    });
+    commit('setData', { type: 'ghg_balance', data: result });
   },
   async loadByType({ commit }, type) {
     let method;
@@ -208,15 +264,12 @@ const actions = {
     if (type === 'electricity') {
       method = 'getElectricity';
       field = 'consumption';
-    } else if (type === 'ghg') {
-      method = 'getGhg';
+    } else if (type === 'ghg_emission') {
+      method = 'getGhgEmission';
       field = 'ghg_emission';
-    } else if (type === 'finance') {
-      method = 'getFinance';
-      field = 'finance';
     } else if (type === 'ghg_balance') {
-      method = 'getGhgBalances';
-      field = 'ghg_balance';
+      // method = 'getGhgBalances';
+      // field = 'ghg_balance';
     }
     const data = await api[method]();
     const result = {};
@@ -237,7 +290,7 @@ const actions = {
     commit('setData', { type, data: result });
   },
   save(_, data = false) {
-    return api.save(data);
+    return api.postElectricity(data);
   }
 };
 

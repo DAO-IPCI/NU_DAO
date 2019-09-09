@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { apiAuth } from './api';
+import api from '../../tools/api';
 
 const state = {
   profile: {},
@@ -19,7 +19,8 @@ const actions = {
   request({ commit, dispatch }, user) {
     return new Promise((resolve, reject) => {
       commit('request');
-      apiAuth({ url: 'auth', data: user, method: 'POST' })
+      api
+        .auth({ url: 'auth', data: user, method: 'POST' })
         .then(resp => {
           localStorage.setItem('user-token', resp.token);
           commit('success', resp);
@@ -35,7 +36,8 @@ const actions = {
   },
   user({ commit, dispatch, state }) {
     commit('request');
-    apiAuth({ url: 'user/me', data: { token: state.token } })
+    api
+      .auth({ url: 'user/me', data: { token: state.token } })
       .then(resp => {
         commit('user', resp);
       })

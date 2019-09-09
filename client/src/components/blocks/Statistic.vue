@@ -9,7 +9,7 @@
         <v-data-table
           hide-default-footer
           :sort-by="sort"
-          :sort-desc="true"
+          :sort-desc="false"
           :headers="headers"
           :items="current"
         >
@@ -22,7 +22,7 @@
           </template>
           <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
           <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
-          <template v-slot:item.ghg="{ item }">{{ Math.round(item.ghg) }}</template>
+          <template v-slot:item.ghg_emission="{ item }">{{ Math.round(item.ghg_emission) }}</template>
           <template v-slot:item.ghg_balance="{ item }">
             <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
           </template>
@@ -39,13 +39,13 @@
           <template v-slot:item.name="{ item }">
             <img
               :src="`assets/i/${getIcon(item.ghg_balance)}`"
-              style="vertical-align: middle;margin-right: 8px;"
+              style="width: 22px;vertical-align: middle;margin-right: 5px;"
             />
             {{ item.name }}
           </template>
           <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
           <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
-          <template v-slot:item.ghg="{ item }">{{ Math.round(item.ghg) }}</template>
+          <template v-slot:item.ghg_emission="{ item }">{{ Math.round(item.ghg_emission) }}</template>
           <template v-slot:item.ghg_balance="{ item }">
             <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
           </template>
@@ -65,7 +65,7 @@ export default {
   },
   data: () => ({
     tab: null,
-    sort: "electricity",
+    sort: "ghg_balance",
     headers: [
       {
         text: "",
@@ -75,7 +75,7 @@ export default {
       },
       { text: i18n.t("statistics.finance"), value: "finance" },
       { text: i18n.t("statistics.electricity"), value: "electricity" },
-      { text: i18n.t("statistics.ghg"), value: "ghg" },
+      { text: i18n.t("statistics.ghg"), value: "ghg_emission" },
       { text: i18n.t("statistics.carbon_balance"), value: "ghg_balance" }
     ]
   }),
