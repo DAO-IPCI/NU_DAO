@@ -4,7 +4,7 @@
     <v-card-text>
       <div class="d-flex justify-space-between align-stretch" style="height: 100%">
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/fossil.png" />
+          <img src="assets/i/dino_red.png" />
           <br />
           {{$t('resume.enemy')}}
           <br />
@@ -15,7 +15,7 @@
           <span class="warning--text title">{{Math.round(max.value)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/libra.gif" />
+          <img src="assets/i/libra.png" />
           <br />
           {{ $t('resume.cumulative_result') }}
           <br />
@@ -29,7 +29,7 @@
           >{{Math.round(sum)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/friend.png" />
+          <img src="assets/i/dino_green.png" />
           <br />
           {{$t('resume.friend')}}
           <br />

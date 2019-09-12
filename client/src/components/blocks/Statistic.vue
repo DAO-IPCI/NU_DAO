@@ -16,7 +16,8 @@
           <template v-slot:item.name="{ item }">
             <img
               :src="`assets/i/${getIcon(item.ghg_balance)}`"
-              style="width: 22px;vertical-align: middle;margin-right: 5px;"
+              style="vertical-align: middle;"
+              :style="getStyle(item.ghg_balance)"
             />
             {{ item.name }}
           </template>
@@ -39,7 +40,8 @@
           <template v-slot:item.name="{ item }">
             <img
               :src="`assets/i/${getIcon(item.ghg_balance)}`"
-              style="width: 22px;vertical-align: middle;margin-right: 5px;"
+              style="vertical-align: middle;"
+              :style="getStyle(item.ghg_balance)"
             />
             {{ item.name }}
           </template>
@@ -81,9 +83,15 @@ export default {
   }),
   methods: {
     getIcon(ghg_balance) {
-      if (ghg_balance < -5) return "green.png";
-      else if (ghg_balance > -5 && ghg_balance < 5) return "orange.png";
-      else return "red.png";
+      if (ghg_balance < -5) return "monster_green.png";
+      else if (ghg_balance > -5 && ghg_balance < 5) return "monster_orange.png";
+      else return "monster_red.png";
+    },
+    getStyle(ghg_balance) {
+      if (ghg_balance < -5) return "width: 34px;margin-right: 5px;";
+      else if (ghg_balance > -5 && ghg_balance < 5)
+        return "width: 34px;margin-right: 5px;";
+      else return "width: 27px;margin-right: 7px;margin-left: 5px;";
     },
     getColor(ghg_balance) {
       if (ghg_balance < -5) return "green";

@@ -8,8 +8,6 @@
         class="body-2"
       >{{$t('map.more')}}</a>
     </v-card-title>
-    <!-- <v-img src="assets/i/map.png" aspect-ratio="2.75"></v-img> -->
-
     <iframe
       frameborder="0"
       allowtransparency="true"
