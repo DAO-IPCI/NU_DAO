@@ -12,7 +12,8 @@ from web3 import Web3, WebsocketProvider
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
 
 config = ConfigParser()
 config.read("nudao.cfg")
