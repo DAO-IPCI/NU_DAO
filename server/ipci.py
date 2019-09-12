@@ -38,12 +38,12 @@ if ETHEREUM_NETWORK_IS_POA == "True":
     from web3.middleware import geth_poa_middleware
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-with open("../contracts/MITO.json", "r") as MITO_abi_file:
+with open("./contracts/MITO.json", "r") as MITO_abi_file:
     MITO_abi = json.load(MITO_abi_file)
 MITO_contract = w3.eth.contract(MITO_CONTRACT_ADDRESS, abi=MITO_abi)
 MITO_decimals = 10 ** MITO_contract.functions.decimals().call()
 
-with open("../contracts/VCU.json", "r") as VCU_abi_file:
+with open("./contracts/VCU.json", "r") as VCU_abi_file:
     VCU_abi = json.load(VCU_abi_file)
 VCU_contract = w3.eth.contract(VCU_CONTRACT_ADDRESS, abi=VCU_abi)
 VCU_decimals = 10 ** VCU_contract.functions.decimals().call()
