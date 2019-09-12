@@ -1,0 +1,48 @@
+logLevel = "INFO"
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[file]
+
+[frontends]
+  [frontends.frontend1]
+  entryPoints = ["http", "https"]
+  backend = "backend1"
+  passHostHeader = true
+    [frontends.frontend1.routes.route0]
+    rule = "Host:nudao.nu.edu.kz"
+
+[backends]
+  [backends.backend1]
+    [backend.backend1.healthcheck]
+      path = "/"
+      interval = "3s"
+    [backends.backend1.servers.server0]
+    url = "http://localhost:8080"
+
+[acme]
+email = "alisher@aira.life"
+storage = "acme.json"
+caServer = "https://acme-v02.api.letsencrypt.org/directory"
+onHostRule = true
+entryPoint = "https"
+
+[acme.httpChallenge]
+  entryPoint = "http"
+ 
+[[acme.domains]]
+  main = "nudao.nu.edu.kz"
+  sans = ["nudao.nu.edu.kz"]
+
+[traefikLog]
+  filePath = "./traefik.log"
+[accessLog]
+  filePath = "./access.log"
