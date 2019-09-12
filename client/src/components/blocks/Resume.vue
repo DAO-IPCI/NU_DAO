@@ -15,7 +15,7 @@
           <span class="warning--text title">{{Math.round(max.value)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/libra.jpg" />
+          <img src="assets/i/libra.gif" />
           <br />
           {{ $t('resume.cumulative_result') }}
           <br />
