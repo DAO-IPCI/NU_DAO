@@ -2,10 +2,9 @@
   <v-card>
     <v-card-title>{{$t('resume.title')}}</v-card-title>
     <v-card-text>
-      <div class="d-flex justify-space-between align-stretch" style="height: 100%">
+      <ResumeScene :dir="sum > 0 ? 'left' : 'right'" style="margin: 20px 0" />
+      <div class="d-flex justify-space-between align-stretch" style="height: 100%;">
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/dino_red.png" />
-          <br />
           {{$t('resume.enemy')}}
           <br />
           <div class="display-1 mt-2">
@@ -15,8 +14,6 @@
           <span class="warning--text title">{{Math.round(max.value)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/libra.png" />
-          <br />
           {{ $t('resume.cumulative_result') }}
           <br />
           <div class="display-1 mt-2">
@@ -29,8 +26,6 @@
           >{{Math.round(sum)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
-          <img src="assets/i/dino_green.png" />
-          <br />
           {{$t('resume.friend')}}
           <br />
           <div class="display-1 mt-2">
@@ -61,10 +56,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ResumeScene from "./ResumeScene";
 
 export default {
   computed: {
     ...mapGetters("data", ["min", "max", "sum"])
-  }
+  },
+  components: { ResumeScene }
 };
 </script>
