@@ -160,3 +160,28 @@ async def read_financial_balances():
 async def read_carbon_units_burned():
     vcu_burned = await db.ipci.find({}, {"member_id": 1, "vcu_burned": 1, "_id": 0}).to_list(length=10000)
     return vcu_burned
+
+
+async def get_members_ids() -> list:
+    member_ids = await db.members.find({}, {"_id": 0, "id": 1}).to_list(length=10000) # list of dicts
+    return [ID["id"] for ID in member_ids] # list of ints
+
+
+@app.get("/api/v1/members/operations/vcu_burn")
+async def read_vcu_burn_operations(member_id = Query([], regex="^\d+$")):
+    member_ids = member_id or await get_members_ids()
+    burn_operations = list()
+    for member_id in member_ids:
+        member_operations = (await db.ipci.find({"member_id": int(member_id)}, {"_id": 0, "burn_operations": 1}).to_list(length=10000))[0]
+        burn_operations.append({"member_id": member_id, **member_operations})
+    return burn_operations
+
+
+@app.get("/api/v1/members/operations/vcu_emission")
+async def read_vcu_emission_operations(member_id = Query([], regex="^\d+$")):
+    member_ids = member_id or await get_members_ids()
+    emission_operations = list()
+    for member_id in member_ids:
+        member_operations = (await db.ipci.find({"member_id": int(member_id)}, {"_id": 0, "emission_operations": 1}).to_list(length=10000))[0]
+        emission_operations.append({"member_id": member_id, **member_operations})
+    return emission_operations

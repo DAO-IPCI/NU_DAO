@@ -44,6 +44,7 @@ with open("./contracts/MITO.json", "r") as MITO_abi_file:
 MITO_contract = w3.eth.contract(MITO_CONTRACT_ADDRESS, abi=MITO_abi)
 MITO_decimals = 10 ** MITO_contract.functions.decimals().call()
 
+# Verified Carbon Unit smart contracts
 with open("./contracts/Energy_VCU.json", "r") as Energy_VCU_abi_file:
     Energy_VCU_abi = json.load(Energy_VCU_abi_file)
 Energy_VCU_contract = w3.eth.contract(ENERGY_VCU_CONTRACT_ADDRESS, abi=Energy_VCU_abi)
