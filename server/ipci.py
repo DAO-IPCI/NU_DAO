@@ -24,7 +24,7 @@ DATABASE_NAME = config.get("database", "name")
 ETHEREUM_NETWORK = config.get("ipci", "network")
 ETHEREUM_NETWORK_IS_POA = config.get("ipci", "is_poa")
 MITO_CONTRACT_ADDRESS = config.get("ipci", "MITO_contract_address")
-VCU_CONTRACT_ADDRESS = config.get("ipci", "VCU_contract_address")
+ENERGY_VCU_CONTRACT_ADDRESS = config.get("ipci", "Energy_VCU_contract_address")
 UPDATE_PERIOD = float(config.get("ipci", "update_period_sec"))
 
 INFURA_PROJECT_ID = environ["INFURA_PROJECT_ID"]
@@ -44,28 +44,19 @@ with open("./contracts/MITO.json", "r") as MITO_abi_file:
 MITO_contract = w3.eth.contract(MITO_CONTRACT_ADDRESS, abi=MITO_abi)
 MITO_decimals = 10 ** MITO_contract.functions.decimals().call()
 
-with open("./contracts/VCU.json", "r") as VCU_abi_file:
-    VCU_abi = json.load(VCU_abi_file)
-VCU_contract = w3.eth.contract(VCU_CONTRACT_ADDRESS, abi=VCU_abi)
-VCU_decimals = 10 ** VCU_contract.functions.decimals().call()
+with open("./contracts/Energy_VCU.json", "r") as Energy_VCU_abi_file:
+    Energy_VCU_abi = json.load(Energy_VCU_abi_file)
+Energy_VCU_contract = w3.eth.contract(ENERGY_VCU_CONTRACT_ADDRESS, abi=Energy_VCU_abi)
+
+VCU_contracts = {
+    Energy_VCU_contract
+}
 
 
 def get_mito_balance(address: str):
     """TODO: this may block for too long, better to invoke bulk in process executor
     """
     return MITO_contract.functions.balanceOf(address).call() / MITO_decimals
-
-
-def get_carbon_units_burned(address: str):
-    """TODO: this may block for too long, better to invoke bulk in process executor
-       TODO: it reads full list of events each call, better to cash value & block to query only new
-    """
-    burn_events = VCU_contract.events.Transfer().createFilter(
-        fromBlock=1,
-        argument_filters={"from": address, "to": "0x0000000000000000000000000000000000000000"}
-    ).get_all_entries()
-    burned = reduce(lambda prev, ev: prev + ev["args"]["value"], burn_events, 0) / VCU_decimals
-    return burned
 
 
 async def financial_balances_updater(update_period):
@@ -83,16 +74,84 @@ async def financial_balances_updater(update_period):
         await asyncio.sleep(update_period)
 
 
-async def carbon_units_burned_updater(update_period):
-    logger.info("Starting carbon units burned updater")
+async def carbon_units_burn_operations_updater(update_period):
+    """Store carbon units burn operations in database
+    FIXME: filter with get_new_entries to decrease infura/networking usage
+    """
+    logger.info("Starting burn operations updater")
     while True:
-        logger.debug("Updating carbon units burned...")
+        logger.debug("Updating burn operations...")
         members = await db.members.find({}, {"id": 1, "ethereum_address": 1, "_id": 0}).to_list(length=10000)
         for member in members: # heavy
-            units_burned = get_carbon_units_burned(member["ethereum_address"])
+            burn_operations = list()
+            for contract in VCU_contracts:
+                decimals = 10 ** contract.functions.decimals().call()
+                burn_events = contract.events.Transfer().createFilter(
+                    fromBlock=1,
+                    argument_filters={"from": member["ethereum_address"], "to": "0x0000000000000000000000000000000000000000"}
+                ).get_all_entries()
+
+                operations = list()
+                for event in burn_events:
+                    operations.append(dict(
+                        transaction_hash = repr(event.transactionHash),
+                        block_hash = repr(event.blockHash),
+                        block_number = event.blockNumber,
+                        value = event.args.value / decimals
+                    ))
+                burn_operations.append(dict(
+                    vcu_address = contract.address,
+                    operations = operations
+                ))
             await db.ipci.update_one(
                 {"member_id": member["id"]},
-                {"$set": {"member_id": member["id"], "vcu_burned": units_burned}},
+                {"$set":
+                    {
+                        "member_id": member["id"],
+                        "burn_operations": burn_operations
+                    }
+                },
+                upsert=True
+            )
+        await asyncio.sleep(update_period)
+
+
+async def carbon_units_emission_operations_updater(update_period):
+    logger.info("Starting emission operations updater")
+    while True:
+        logger.debug("Updating emission operations...")
+        members = await db.members.find({}, {"id": 1, "ethereum_address": 1, "_id": 0}).to_list(length=10000)
+        for member in members: # heavy
+            emission_operations = list()
+            for contract in VCU_contracts:
+                decimals = 10 ** contract.functions.decimals().call()
+                emission_events = contract.events.Transfer().createFilter(
+                    fromBlock=1,
+                    argument_filters={"from": "0x0000000000000000000000000000000000000000"} # "to" all
+                ).get_all_entries()
+
+                operations = list()
+                for event in emission_events:
+                    operations.append(dict(
+                        transaction_hash = repr(event.transactionHash),
+                        block_hash = repr(event.blockHash),
+                        block_number = event.blockNumber,
+                        value = event.args.value / decimals
+                    ))
+
+                emission_operations.append(dict(
+                    vcu_address = contract.address,
+                    operations = operations
+                ))
+
+            await db.ipci.update_one(
+                {"member_id": member["id"]},
+                {"$set":
+                    {
+                        "member_id": member["id"],
+                        "emission_operations": emission_operations
+                    }
+                },
                 upsert=True
             )
         await asyncio.sleep(update_period)
@@ -103,7 +162,8 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     try:
         loop.create_task(financial_balances_updater(UPDATE_PERIOD))
-        loop.create_task(carbon_units_burned_updater(UPDATE_PERIOD))
+        loop.create_task(carbon_units_burn_operations_updater(UPDATE_PERIOD))
+        loop.create_task(carbon_units_emission_operations_updater(UPDATE_PERIOD))
         loop.run_forever()
     finally:
         loop.close()
