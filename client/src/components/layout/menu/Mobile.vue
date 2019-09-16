@@ -8,7 +8,7 @@
         <v-list-item-title>{{$t('menu.marketplace')}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-    <v-list-item href="https://medium.com/@airalab" target="_blank">
+    <v-list-item :href="`https://medium.com/@${medium}`" target="_blank">
       <v-list-item-content>
         <v-list-item-title>{{$t('menu.publications')}}</v-list-item-title>
       </v-list-item-content>
@@ -38,8 +38,12 @@
 
 <script>
 import mixin from "./Mixin";
+import config from "../../../config";
 
 export default {
-  mixins: [mixin]
+  mixins: [mixin],
+  data: () => ({
+    medium: config.medium.user
+  })
 };
 </script>

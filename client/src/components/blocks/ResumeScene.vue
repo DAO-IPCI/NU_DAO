@@ -72,7 +72,7 @@ export default {
 .sprite-basic-scales-red-action,
 .sprite-basic-scales-red-bottom,
 .sprite-basic-scales-red-top {
-  background-image: url("/assets/i/sprite.svg?6");
+  background-image: url("../../../public/assets/i/sprite.svg?6");
 }
 
 .sprite-basic-dino-green {

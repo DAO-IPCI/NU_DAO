@@ -2,6 +2,9 @@
   <v-card>
     <v-card-title>{{$t('news.publications')}}</v-card-title>
     <v-list-item two-line v-for="(item, i) in list" :key="i">
+      <v-list-item-icon v-if="item.icon">
+        <v-icon>mdi-alert-circle-outline</v-icon>
+      </v-list-item-icon>
       <v-list-item-content>
         <v-list-item-subtitle>{{item.pubDate}}</v-list-item-subtitle>
         <v-list-item-content>
@@ -13,11 +16,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapState("news", ["list"])
+    ...mapGetters("news", ["list"])
   }
 };
 </script>
