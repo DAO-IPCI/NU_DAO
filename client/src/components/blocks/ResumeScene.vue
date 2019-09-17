@@ -573,31 +573,31 @@ export default {
   top: 148px;
   left: 28px;
 }
-.animation-scales.red .animation-scales--move {
+.animation-scales.animation-red .animation-scales--move {
   animation: 6s SwingLeft 0.4s cubic-bezier(0.8, 0.28, 0.7, 1) forwards;
 }
-.animation-scales.red .animation-scales--green,
-.animation-scales.red .animation-scales--red {
+.animation-scales.animation-red .animation-scales--green,
+.animation-scales.animation-red .animation-scales--red {
   animation: 6s SwingRight 0.4s cubic-bezier(0.8, 0.28, 0.7, 1) forwards;
 }
-.animation-scales.red .sprite-basic-scales-red-action {
+.animation-scales.animation-red .sprite-basic-scales-red-action {
   animation: SwingScaleIn 6s 0.4s linear forwards;
 }
-.animation-scales.red .sprite-basic-scales-green-action {
+.animation-scales.animation-red .sprite-basic-scales-green-action {
   transform: scale(0.8);
   animation: 6s SwingScaleOut 0.4s linear forwards;
 }
-.animation-scales.green .animation-scales--move {
+.animation-scales.animation-green .animation-scales--move {
   animation: 6s SwingRight 0.4s cubic-bezier(0.8, 0.28, 0.7, 1) forwards;
 }
-.animation-scales.green .animation-scales--green,
-.animation-scales.green .animation-scales--red {
+.animation-scales.animation-green .animation-scales--green,
+.animation-scales.animation-green .animation-scales--red {
   animation: 6s SwingLeft 0.4s cubic-bezier(0.8, 0.28, 0.7, 1) forwards;
 }
-.animation-scales.green .sprite-basic-scales-green-action {
+.animation-scales.animation-green .sprite-basic-scales-green-action {
   animation: 6s SwingScaleIn 0.4s linear forwards;
 }
-.animation-scales.green .sprite-basic-scales-red-action {
+.animation-scales.animation-green .sprite-basic-scales-red-action {
   transform: scale(0.8);
   animation: 6s SwingScaleOut 0.4s linear forwards;
 }
