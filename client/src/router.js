@@ -4,6 +4,7 @@ import Home from './views/Home';
 import Stat from './views/Stat';
 import Login from './views/Login';
 import Add from './views/Add';
+import History from './views/History';
 import store from './store';
 
 Vue.use(Router);
@@ -37,6 +38,11 @@ export default new Router({
       path: '/stat',
       name: 'stat',
       component: Stat
+    },
+    {
+      path: '/history',
+      name: 'history',
+      component: History
     },
     {
       path: '/add',

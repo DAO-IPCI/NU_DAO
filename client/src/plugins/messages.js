@@ -11,6 +11,7 @@ export default {
       marketplace: 'Marketplace',
       publications: 'Publications',
       statistics: 'Statistics',
+      history: 'History',
       add: 'Add',
       login: 'Login',
       logout: 'Logout'
@@ -40,6 +41,14 @@ export default {
     },
     news: {
       publications: 'Publications'
+    },
+    log: {
+      type: 'Type',
+      block_number: 'Block number',
+      member: 'Member',
+      transaction_hash: 'Tx',
+      value: 'Value',
+      token: 'Token'
     }
   },
   ru: {
@@ -51,6 +60,7 @@ export default {
       marketplace: 'Торговая площадка',
       publications: 'Публикации',
       statistics: 'Статистика',
+      history: 'История',
       add: 'Добавить',
       login: 'Войти',
       logout: 'Выйти'
@@ -80,6 +90,14 @@ export default {
     },
     news: {
       publications: 'Публикации'
+    },
+    log: {
+      type: 'Тип',
+      block_number: 'Номер блока',
+      member: 'Участник',
+      transaction_hash: 'Транзакция',
+      value: 'Кол-во',
+      token: 'токен'
     }
   }
 };

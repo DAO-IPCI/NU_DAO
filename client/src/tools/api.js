@@ -19,6 +19,12 @@ function getFinanceBalances() {
 function getCarbonBurn() {
   return api.get('/members/finance/carbon_units_burned');
 }
+function getVCUBurn() {
+  return api.get('/members/operations/vcu_burn');
+}
+function getVCUEmission() {
+  return api.get('/members/operations/vcu_emission');
+}
 function postElectricity(data) {
   return api.post('/members/electricity/consumptions', data);
 }
@@ -61,6 +67,8 @@ export default {
   getGhgBalances,
   getFinanceBalances,
   getCarbonBurn,
+  getVCUBurn,
+  getVCUEmission,
   postElectricity,
   auth
 };

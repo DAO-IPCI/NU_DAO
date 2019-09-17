@@ -40,11 +40,21 @@ const state = {
     //   member_id: 1,
     //   value: 123
     // }
+  },
+  log: {
+    burn: [],
+    emission: []
   }
 };
 
 // getters
 const getters = {
+  memberName: state => id => {
+    const member = state.members.find(item => {
+      return item.id === id;
+    });
+    return member.name;
+  },
   member: state => (id, month = false) => {
     const member = state.members.find(item => {
       return item.id === id;
@@ -208,6 +218,31 @@ const getters = {
       });
     });
     return sum;
+  },
+  log: (state, getters) => {
+    const burn = state.log.burn.map(item => {
+      return {
+        type: 'burn',
+        member: getters.memberName(item.member_id),
+        ...item
+      };
+    });
+    const emission = state.log.emission.map(item => {
+      return {
+        type: 'emission',
+        member: getters.memberName(item.member_id),
+        ...item
+      };
+    });
+    return [...burn, ...emission].sort((a, b) => {
+      if (a.block_number > b.block_number) {
+        return -1;
+      }
+      if (a.block_number < b.block_number) {
+        return 1;
+      }
+      return 0;
+    });
   }
 };
 
@@ -224,6 +259,8 @@ const actions = {
     dispatch('loadGhgBalance');
     dispatch('loadFinance');
     dispatch('loadCarbonBurn');
+    dispatch('loadLogBurn');
+    dispatch('loadLogEmission');
   },
   async loadFinance({ commit }) {
     const data = await api.getFinanceBalances();
@@ -289,6 +326,42 @@ const actions = {
     });
     commit('setData', { type, data: result });
   },
+  async loadLogBurn({ commit }) {
+    const data = await api.getVCUBurn();
+    const result = [];
+    data.forEach(row => {
+      row.burn_operations.forEach(token => {
+        token.operations.forEach(item => {
+          result.push({
+            transaction_hash: item.transaction_hash.substr(10, 66),
+            block_number: item.block_number,
+            value: item.value,
+            token: token.vcu_address,
+            member_id: row.member_id
+          });
+        });
+      });
+    });
+    commit('setLog', { type: 'burn', data: result });
+  },
+  async loadLogEmission({ commit }) {
+    const data = await api.getVCUEmission();
+    const result = [];
+    data.forEach(row => {
+      row.emission_operations.forEach(token => {
+        token.operations.forEach(item => {
+          result.push({
+            transaction_hash: item.transaction_hash.substr(10, 66),
+            block_number: item.block_number,
+            value: item.value,
+            token: token.vcu_address,
+            member_id: row.member_id
+          });
+        });
+      });
+    });
+    commit('setLog', { type: 'emission', data: result });
+  },
   save(_, data = false) {
     return api.postElectricity(data);
   }
@@ -301,6 +374,9 @@ const mutations = {
   },
   setData(state, { type, data }) {
     state[type] = data;
+  },
+  setLog(state, { type, data }) {
+    state.log[type] = data;
   }
 };
 

@@ -18,6 +18,11 @@
         <v-list-item-title>{{$t('menu.statistics')}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title>{{$t('menu.history')}}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     <v-list-item v-if="isAuthenticated" :to="{name:'add'}">
       <v-list-item-content>
         <v-list-item-title>{{$t('menu.add')}}</v-list-item-title>
