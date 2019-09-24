@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'https://hbrz.khassanov.me/api/v1';
+const url = 'https://nudao.kz/api/v1';
 
 function get(params) {
   return axios.get(url + params).then(r => {
