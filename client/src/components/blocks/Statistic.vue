@@ -21,11 +21,19 @@
             />
             {{ item.name }}
           </template>
-          <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
-          <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
-          <template v-slot:item.ghg_emission="{ item }">{{ Math.round(item.ghg_emission) }}</template>
+          <template
+            v-slot:item.finance="{ item }"
+          >{{ (item.finance === null) ? '-' : Math.round(item.finance) }}</template>
+          <template
+            v-slot:item.electricity="{ item }"
+          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity) }}</template>
+          <template
+            v-slot:item.ghg_emission="{ item }"
+          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission) }}</template>
           <template v-slot:item.ghg_balance="{ item }">
-            <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
+            <b
+              :class="`${getColor(item.ghg_balance)}--text`"
+            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance) }}</b>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -33,7 +41,7 @@
         <v-data-table
           hide-default-footer
           :sort-by="sort"
-          :sort-desc="true"
+          :sort-desc="false"
           :headers="headers"
           :items="all"
         >
@@ -45,11 +53,19 @@
             />
             {{ item.name }}
           </template>
-          <template v-slot:item.finance="{ item }">{{ Math.round(item.finance) }}</template>
-          <template v-slot:item.electricity="{ item }">{{ Math.round(item.electricity) }}</template>
-          <template v-slot:item.ghg_emission="{ item }">{{ Math.round(item.ghg_emission) }}</template>
+          <template
+            v-slot:item.finance="{ item }"
+          >{{ (item.finance === null) ? '-' : Math.round(item.finance) }}</template>
+          <template
+            v-slot:item.electricity="{ item }"
+          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity) }}</template>
+          <template
+            v-slot:item.ghg_emission="{ item }"
+          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission) }}</template>
           <template v-slot:item.ghg_balance="{ item }">
-            <b :class="`${getColor(item.ghg_balance)}--text`">{{ Math.round(item.ghg_balance) }}</b>
+            <b
+              :class="`${getColor(item.ghg_balance)}--text`"
+            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance) }}</b>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -83,18 +99,22 @@ export default {
   }),
   methods: {
     getIcon(ghg_balance) {
-      if (ghg_balance < -5) return "monster_green.png";
+      if (ghg_balance === null) return "monster_red.png";
+      else if (ghg_balance < -5) return "monster_green.png";
       else if (ghg_balance > -5 && ghg_balance < 5) return "monster_orange.png";
       else return "monster_red.png";
     },
     getStyle(ghg_balance) {
-      if (ghg_balance < -5) return "width: 34px;margin-right: 5px;";
+      if (ghg_balance === null)
+        return "width: 27px;margin-right: 7px;margin-left: 5px;";
+      else if (ghg_balance < -5) return "width: 34px;margin-right: 5px;";
       else if (ghg_balance > -5 && ghg_balance < 5)
         return "width: 34px;margin-right: 5px;";
       else return "width: 27px;margin-right: 7px;margin-left: 5px;";
     },
     getColor(ghg_balance) {
-      if (ghg_balance < -5) return "green";
+      if (ghg_balance === null) return "red";
+      else if (ghg_balance < -5) return "green";
       else if (ghg_balance > -5 && ghg_balance < 5) return "orange";
       else return "red";
     }

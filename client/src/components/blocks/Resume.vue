@@ -11,7 +11,10 @@
             <b>{{max.member}}</b>
           </div>
           <br />
-          <span class="warning--text title">{{Math.round(max.value)}}</span> tCO2
+          <span
+            class="title"
+            :class="{'primary--text': max.value <= 0, 'warning--text': max.value > 0 }"
+          >{{Math.round(max.value)}}</span> tCO2
         </div>
         <div class="pa-5 text-center align-self-center">
           {{ $t('resume.cumulative_result') }}
@@ -32,7 +35,10 @@
             <b>{{min.member}}</b>
           </div>
           <br />
-          <span class="primary--text title">{{Math.round(min.value)}}</span> tCO2
+          <span
+            class="title"
+            :class="{'primary--text': min.value <= 0, 'warning--text': min.value > 0 }"
+          >{{Math.round(min.value)}}</span> tCO2
         </div>
       </div>
       <div>

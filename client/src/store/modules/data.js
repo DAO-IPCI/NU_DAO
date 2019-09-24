@@ -61,10 +61,10 @@ const getters = {
     });
     const result = {
       name: member.name,
-      electricity: 0,
-      ghg_emission: 0,
-      ghg_balance: 0,
-      finance: 0
+      electricity: null,
+      ghg_emission: null,
+      ghg_balance: null,
+      finance: null
     };
     if (month) {
       if (state.electricity[id]) {
@@ -142,17 +142,17 @@ const getters = {
         }
       });
     });
-    let max = null;
+    let min = null;
     Object.keys(d).forEach(member_id => {
-      if (max === null || d[member_id] < max.value) {
-        max = {
+      if (min === null || d[member_id] < min.value) {
+        min = {
           member: '-',
           member_id: Number(member_id),
           value: d[member_id]
         };
       }
     });
-    if (max === null) {
+    if (min === null) {
       return {
         member: '-',
         member_id: 0,
@@ -160,15 +160,15 @@ const getters = {
       };
     }
     const member = state.members.find(item => {
-      return item.id === max.member_id;
+      return item.id === min.member_id;
     });
     if (member) {
       return {
-        ...max,
+        ...min,
         member: member.name
       };
     }
-    return max;
+    return min;
   },
   max: state => {
     const d = {};
