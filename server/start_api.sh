@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-uvicorn api:app --reload --port 8081
+uvicorn api:app --reload --host localhost --port 8082

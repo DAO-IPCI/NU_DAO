@@ -1,0 +1,27 @@
+# Nginx configuration
+# /etc/nginx/sites-available/nudao.kz
+
+server {
+  server_name nudao.kz nu.nudao.kz;
+
+  charset utf-8;
+  root /var/www/nudao.kz;
+  index index.html;
+
+  location / {
+    root /var/www/nudao.kz;
+  }
+
+  location /wdc {
+    alias /var/www/nudao.kz/wdc;
+    index ghg_balances_nu.html;
+  }
+
+  location /api/v1 {
+      proxy_pass http://localhost:8082;
+  }
+
+  error_log /var/log/nginx/nudao.kz-error.log;
+  access_log /var/log/nginx/nudao.kz-access.log;
+
+}
