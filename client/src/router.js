@@ -4,6 +4,7 @@ import Home from './views/Home';
 import Stat from './views/Stat';
 import Login from './views/Login';
 import Add from './views/Add';
+import Map from './views/Map';
 import History from './views/History';
 import store from './store';
 
@@ -38,6 +39,11 @@ export default new Router({
       path: '/stat',
       name: 'stat',
       component: Stat
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: Map
     },
     {
       path: '/history',

@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col lg="6" cols="12">
-        <Map style="height: 100%;" />
+        <MapCard style="height: 100%;" />
       </v-col>
       <v-col lg="6" cols="12">
         <Statistic style="height: 100%;" />
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import Map from "@/components/blocks/Map";
+import MapCard from "@/components/blocks/MapCard";
 import Statistic from "@/components/blocks/Statistic";
 import Resume from "@/components/blocks/Resume";
 import News from "@/components/blocks/News";
 
 export default {
-  components: { Map, Statistic, Resume, News }
+  components: { MapCard, Statistic, Resume, News }
 };
 </script>
