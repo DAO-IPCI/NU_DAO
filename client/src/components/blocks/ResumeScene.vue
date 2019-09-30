@@ -43,10 +43,16 @@ export default {
     }
   },
   mounted() {
-    const $wrap = document.querySelector("#animation-scene");
-    const $content = document.querySelector("#animation-scene--content");
-    const ratio = ($wrap.offsetWidth / $content.offsetWidth).toFixed(2);
-    $content.style.transform = "scale(" + ratio + ")";
+    this.scale();
+    window.addEventListener("resize", this.scale, false);
+  },
+  methods: {
+    scale() {
+      const $wrap = document.querySelector("#animation-scene");
+      const $content = document.querySelector("#animation-scene--content");
+      const ratio = ($wrap.offsetWidth / $content.offsetWidth).toFixed(2);
+      $content.style.transform = "scale(" + ratio + ")";
+    }
   }
 };
 </script>
