@@ -8,7 +8,7 @@ export default {
     desc_page:
       'Nazarbayev University market system model for greenhouse gases emission reduction',
     menu: {
-      marketplace: 'Marketplace',
+      marketplace: 'Climate initiatives system',
       publications: 'Publications',
       statistics: 'Statistics',
       history: 'History',
@@ -17,7 +17,7 @@ export default {
       logout: 'Logout'
     },
     map: {
-      title: 'Carbon balance (to same month in 2018)',
+      title: 'Carbon balance',
       more: 'more'
     },
     statistics: {
@@ -25,7 +25,7 @@ export default {
       all_rating: 'All time tops',
       ghg: 'CO2 emission, ton',
       electricity: 'Electricity comsumed, kWh',
-      finance: 'Balance, ₸',
+      finance: 'Balance, NU DAO KZT',
       carbon_balance: 'Carbon balance, tCO2'
     },
     resume: {
@@ -37,10 +37,10 @@ export default {
       state_goal: 'Kazakhstan state goal',
       annual: 'annual',
       contribution: 'NU contribution',
-      global: 'Global goal to keep global warming under 1.5°'
+      global: 'Global goal to keep warming under 1.5°'
     },
     news: {
-      publications: 'Publications'
+      publications: 'About the Game'
     },
     log: {
       type: 'Type',
@@ -57,7 +57,7 @@ export default {
     desc_page:
       'Модель рыночной системы снижения выбросов парниковых газов Назарбаев Университета',
     menu: {
-      marketplace: 'Торговая площадка',
+      marketplace: 'Система климатических инициатив',
       publications: 'Публикации',
       statistics: 'Статистика',
       history: 'История',
@@ -74,7 +74,7 @@ export default {
       all_rating: 'Рейтинг за все время',
       ghg: 'Выбросов CO2, тонн',
       electricity: 'Потреблено электроэнергии, кВт * ч',
-      finance: 'Баланс, ₸',
+      finance: 'Баланс, NU DAO KZT',
       carbon_balance: 'Углеродный баланс, tCO2'
     },
     resume: {
@@ -89,7 +89,7 @@ export default {
       global: 'Глобальная цель для удержания роста температуры до 1,5°'
     },
     news: {
-      publications: 'Публикации'
+      publications: 'Об игре'
     },
     log: {
       type: 'Тип',
