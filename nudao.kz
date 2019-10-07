@@ -1,8 +1,5 @@
-# Nginx configuration
-# /etc/nginx/sites-available/nudao.kz
-
 server {
-  server_name nudao.kz nu.nudao.kz;
+  server_name nudao.kz;
 
   charset utf-8;
   root /var/www/nudao.kz;
@@ -18,7 +15,7 @@ server {
   }
 
   location /api/v1 {
-      proxy_pass http://localhost:8082;
+    proxy_pass http://localhost:8082;
   }
 
   error_log /var/log/nginx/nudao.kz-error.log;
