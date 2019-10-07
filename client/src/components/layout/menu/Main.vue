@@ -8,8 +8,8 @@
     >{{$t('menu.marketplace')}}</v-btn>-->
     <v-btn
       text
-      title="rinkeby"
-      href="https://dapp.ipci.io/#/dao/market/0xd86E7d6322F38646A37e2a713723d8B15347Be99"
+      title="ipci"
+      href="https://new.dapp.ipci.io/"
       target="_blank"
     >{{$t('menu.marketplace')}}</v-btn>
     <v-btn text :href="`https://medium.com/@${medium}`" target="_blank">{{$t('menu.publications')}}</v-btn>

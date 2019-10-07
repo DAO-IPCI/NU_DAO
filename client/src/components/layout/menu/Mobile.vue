@@ -1,7 +1,7 @@
 <template>
   <v-list dense>
     <v-list-item
-      href="https://dapp.ipci.io/#/dao/market/0xd86E7d6322F38646A37e2a713723d8B15347Be99"
+      href="https://new.dapp.ipci.io/"
       target="_blank"
     >
       <v-list-item-content>
