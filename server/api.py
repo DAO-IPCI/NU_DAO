@@ -4,6 +4,7 @@ import configparser
 from datetime import datetime
 import logging
 from typing import List
+from os import environ
 
 from fastapi import FastAPI, Query, HTTPException
 from starlette.middleware.cors import CORSMiddleware
@@ -18,9 +19,11 @@ logger.addHandler(logging.StreamHandler())
 config =  configparser.ConfigParser()
 config.read("nudao.cfg")
 
-DATABASE_URI = config.get("database", "connection_string")
+DATABASE_PREFIX = config.get("database", "connection_prefix")
+DATABASE_ADDRESS = config.get("database", "connection_address")
+DATABASE_URI = f"{DATABASE_PREFIX}{environ['DATABASE_USER']}:{environ['DATABASE_PWD']}@{DATABASE_ADDRESS}"
 DATABASE_NAME = config.get("database", "name")
-TCO2_IN_ONE_VCU = float(config.get("ipci", "tCO2_in_one_VCU"))
+TCO2_IN_ONE_VCU = float(config.get("ipci", "tCO2_in_one_GCT"))
 
 mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(DATABASE_URI)
 db = mongodb_client[DATABASE_NAME]
