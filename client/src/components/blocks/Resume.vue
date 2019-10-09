@@ -4,18 +4,16 @@
     <v-card-text>
       <ResumeScene :dir="sum > 0 ? 'left' : 'right'" style="margin: 20px 0" />
       <div class="d-flex justify-space-between align-stretch" style="height: 100%;">
-        <div class="pa-5 text-center align-self-center">
+        <div v-if="max" class="pa-5 text-center align-self-center">
           {{$t('resume.enemy')}}
           <br />
           <div class="display-1 mt-2">
             <b>{{max.member}}</b>
           </div>
           <br />
-          <span
-            class="title"
-            :class="{'primary--text': max.value <= 0, 'warning--text': max.value > 0 }"
-          >{{Math.round(max.value)}}</span> tCO2
+          <span class="title warning--text">{{Math.round(max.value)}}</span> tCO2
         </div>
+        <div v-else style="width: 20%;"></div>
         <div class="pa-5 text-center align-self-center">
           {{ $t('resume.cumulative_result') }}
           <br />
@@ -28,18 +26,16 @@
             :class="{'primary--text': sum <= 0, 'warning--text': sum > 0 }"
           >{{Math.round(sum)}}</span> tCO2
         </div>
-        <div class="pa-5 text-center align-self-center">
+        <div v-if="min" class="pa-5 text-center align-self-center">
           {{$t('resume.friend')}}
           <br />
           <div class="display-1 mt-2">
             <b>{{min.member}}</b>
           </div>
           <br />
-          <span
-            class="title"
-            :class="{'primary--text': min.value <= 0, 'warning--text': min.value > 0 }"
-          >{{Math.round(min.value)}}</span> tCO2
+          <span class="title primary--text">{{Math.round(min.value)}}</span> tCO2
         </div>
+        <div v-else style="width: 30%;"></div>
       </div>
       <div>
         <p>

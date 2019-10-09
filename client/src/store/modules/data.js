@@ -152,23 +152,18 @@ const getters = {
         };
       }
     });
-    if (min === null) {
-      return {
-        member: '-',
-        member_id: 0,
-        value: 0
-      };
+    if (min !== null && min.value <= 0) {
+      const member = state.members.find(item => {
+        return item.id === min.member_id;
+      });
+      if (member) {
+        return {
+          ...min,
+          member: member.name
+        };
+      }
     }
-    const member = state.members.find(item => {
-      return item.id === min.member_id;
-    });
-    if (member) {
-      return {
-        ...min,
-        member: member.name
-      };
-    }
-    return min;
+    return null;
   },
   max: state => {
     const d = {};
@@ -190,23 +185,18 @@ const getters = {
         };
       }
     });
-    if (max === null) {
-      return {
-        member: '-',
-        member_id: 0,
-        value: 0
-      };
+    if (max !== null && max.value > 0) {
+      const member = state.members.find(item => {
+        return item.id === max.member_id;
+      });
+      if (member) {
+        return {
+          ...max,
+          member: member.name
+        };
+      }
     }
-    const member = state.members.find(item => {
-      return item.id === max.member_id;
-    });
-    if (member) {
-      return {
-        ...max,
-        member: member.name
-      };
-    }
-    return max;
+    return null;
   },
   sum: state => {
     let sum = 0;
