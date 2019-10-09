@@ -91,10 +91,10 @@ const getters = {
           result.ghg_balance = g.value;
         }
       }
-      if (state.finance[id]) {
+      if (state.finance[id] >= 0) {
         result.finance = state.finance[id];
       }
-      if (state.carbon_burn[id]) {
+      if (state.carbon_burn[id] >= 0) {
         result.carbon_burn = state.carbon_burn[id];
       }
     } else {
@@ -113,10 +113,10 @@ const getters = {
           result.ghg_balance += item.value;
         });
       }
-      if (state.finance[id]) {
+      if (state.finance[id] >= 0) {
         result.finance = state.finance[id];
       }
-      if (state.carbon_burn[id]) {
+      if (state.carbon_burn[id] >= 0) {
         result.carbon_burn = state.carbon_burn[id];
       }
     }
@@ -330,17 +330,19 @@ const actions = {
     const data = await api.getVCUBurn();
     const result = [];
     data.forEach(row => {
-      row.burn_operations.forEach(token => {
-        token.operations.forEach(item => {
-          result.push({
-            transaction_hash: item.transaction_hash.substr(10, 66),
-            block_number: item.block_number,
-            value: item.value,
-            token: token.vcu_address,
-            member_id: row.member_id
+      if (row.burn_operations) {
+        row.burn_operations.forEach(token => {
+          token.operations.forEach(item => {
+            result.push({
+              transaction_hash: item.transaction_hash.substr(10, 66),
+              block_number: item.block_number,
+              value: item.value,
+              token: token.vcu_address,
+              member_id: row.member_id
+            });
           });
         });
-      });
+      }
     });
     commit('setLog', { type: 'burn', data: result });
   },
@@ -348,17 +350,19 @@ const actions = {
     const data = await api.getVCUEmission();
     const result = [];
     data.forEach(row => {
-      row.emission_operations.forEach(token => {
-        token.operations.forEach(item => {
-          result.push({
-            transaction_hash: item.transaction_hash.substr(10, 66),
-            block_number: item.block_number,
-            value: item.value,
-            token: token.vcu_address,
-            member_id: row.member_id
+      if (row.emission_operations) {
+        row.emission_operations.forEach(token => {
+          token.operations.forEach(item => {
+            result.push({
+              transaction_hash: item.transaction_hash.substr(10, 66),
+              block_number: item.block_number,
+              value: item.value,
+              token: token.vcu_address,
+              member_id: row.member_id
+            });
           });
         });
-      });
+      }
     });
     commit('setLog', { type: 'emission', data: result });
   },
