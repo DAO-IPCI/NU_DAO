@@ -322,15 +322,17 @@ const actions = {
     data.forEach(row => {
       if (row.burn_operations) {
         row.burn_operations.forEach(token => {
-          token.operations.forEach(item => {
-            result.push({
-              transaction_hash: item.transaction_hash,
-              block_number: item.block_number,
-              value: item.value,
-              token: token.vcu_address,
-              member_id: row.member_id
+          if (token.operations) {
+            token.operations.forEach(item => {
+              result.push({
+                transaction_hash: item.transaction_hash,
+                block_number: item.block_number,
+                value: item.value,
+                token: token.vcu_address,
+                member_id: row.member_id
+              });
             });
-          });
+          }
         });
       }
     });
@@ -342,15 +344,17 @@ const actions = {
     data.forEach(row => {
       if (row.emission_operations) {
         row.emission_operations.forEach(token => {
-          token.operations.forEach(item => {
-            result.push({
-              transaction_hash: item.transaction_hash,
-              block_number: item.block_number,
-              value: item.value,
-              token: token.vcu_address,
-              member_id: row.member_id
+          if (token.operations) {
+            token.operations.forEach(item => {
+              result.push({
+                transaction_hash: item.transaction_hash,
+                block_number: item.block_number,
+                value: item.value,
+                token: token.vcu_address,
+                member_id: row.member_id
+              });
             });
-          });
+          }
         });
       }
     });
