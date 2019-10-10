@@ -324,7 +324,7 @@ const actions = {
         row.burn_operations.forEach(token => {
           token.operations.forEach(item => {
             result.push({
-              transaction_hash: item.transaction_hash.substr(10, 66),
+              transaction_hash: item.transaction_hash,
               block_number: item.block_number,
               value: item.value,
               token: token.vcu_address,
@@ -344,7 +344,7 @@ const actions = {
         row.emission_operations.forEach(token => {
           token.operations.forEach(item => {
             result.push({
-              transaction_hash: item.transaction_hash.substr(10, 66),
+              transaction_hash: item.transaction_hash,
               block_number: item.block_number,
               value: item.value,
               token: token.vcu_address,
