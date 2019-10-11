@@ -67,7 +67,7 @@ export default {
       logout: 'Выйти'
     },
     map: {
-      title: 'Углеродный баланс (к тому же месяцу 2018)',
+      title: 'Углеродный баланс',
       more: 'подробнее'
     },
     statistics: {
