@@ -34,7 +34,12 @@ GCTNUDAOKZT = float(config.get("ipci", "GCTNUDAOKZT"))
 INFURA_PROJECT_ID = environ["INFURA_PROJECT_ID"]
 WEB3_WSS_PROVIDER = environ["WEB3_WSS_PROVIDER"]
 
-DATABASE_URI = f"{DATABASE_PREFIX}{environ['DATABASE_USER']}:{environ['DATABASE_PWD']}@{DATABASE_ADDRESS}"
+if f"{environ['DATABASE_USER']}" == "":
+    DATABASE_URI = f"{DATABASE_PREFIX}{DATABASE_ADDRESS}"
+    logger.info(f"Connecting to database at {DATABASE_URI} without auth")
+else:
+    DATABASE_URI = f"{DATABASE_PREFIX}{environ['DATABASE_USER']}:{environ['DATABASE_PWD']}@{DATABASE_ADDRESS}"
+    logger.info(f"Connecting to database as {environ['DATABASE_USER']}")
 db = pymongo.MongoClient(DATABASE_URI)[DATABASE_NAME]
 
 
@@ -138,11 +143,11 @@ def update_carbon_units_burn_operations():
             )
 
         exists = bool(db.ipci.find_one(
-                {"_id": document["_id"], "burn_operations.vcu_address": vcu_address})
-            )
+            {"_id": document["_id"], "burn_operations": {"$elemMatch": {"vcu_address": vcu_address}}}
+            ))
         if exists:
             db.ipci.update_one(
-                    {"_id": document["_id"], "burn_operations.vcu_address": vcu_address},
+                    {"_id": document["_id"], "burn_operations": {"$elemMatch": {"vcu_address": vcu_address}}},
                     {"$addToSet":
                         {"burn_operations.$.operations": operation}
                     },
@@ -152,7 +157,7 @@ def update_carbon_units_burn_operations():
             db.ipci.update_one(
                     {"_id": document["_id"]},
                     {"$push":
-                        {"burn_operations": operation}
+                        {"burn_operations": {"vcu_address": vcu_address, "operations": [operation]} }
                     },
                     upsert=True
                 )
