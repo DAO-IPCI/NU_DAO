@@ -1,3 +1,4 @@
+import passwordHash from 'password-hash';
 import api from './api-server';
 // import api from './api-mock';
 
@@ -32,7 +33,7 @@ function postElectricity(data) {
 const mocks = {
   auth: {
     POST: data => {
-      if (data.login === 'admin' && data.password === 'admin') {
+      if (data.login === 'operator' && passwordHash.verify(data.password, 'sha1$626cb54a$1$adc1704af2db6eb16269468976470e6c918f9e82')) {
         return { token: 'This-is-a-mocked-token' };
       }
       throw new Error('err');
