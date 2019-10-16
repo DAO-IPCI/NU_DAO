@@ -29,12 +29,7 @@
                     </v-col>
 
                     <v-col cols="12" md="6">
-                      <v-text-field
-                        v-model="row.consumption"
-                        :rules="required"
-                        label="Consumption"
-                        type="text"
-                      ></v-text-field>
+                      <v-text-field v-model="row.consumption" label="Consumption" type="text"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -110,14 +105,16 @@ export default {
         this.request = true;
         const records = [];
         this.rows.forEach(item => {
-          const member = this.members.find(member => {
-            return member.name === item.member;
-          });
-          records.push({
-            member_id: member.id,
-            member_name: item.member,
-            consumption: item.consumption
-          });
+          if (item.consumption !== "") {
+            const member = this.members.find(member => {
+              return member.name === item.member;
+            });
+            records.push({
+              member_id: member.id,
+              member_name: item.member,
+              consumption: item.consumption
+            });
+          }
         });
         this.$store
           .dispatch("data/save", {
