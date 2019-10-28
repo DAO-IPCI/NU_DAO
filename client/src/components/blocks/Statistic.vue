@@ -33,7 +33,7 @@
           <template v-slot:item.ghg_balance="{ item }">
             <b
               :class="`${getColor(item.ghg_balance)}--text`"
-            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance) }}</b>
+            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance * 1000) / 1000 }}</b>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -65,7 +65,7 @@
           <template v-slot:item.ghg_balance="{ item }">
             <b
               :class="`${getColor(item.ghg_balance)}--text`"
-            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance) }}</b>
+            >{{ (item.ghg_balance === null) ? '-' : Math.round(item.ghg_balance * 1000) / 1000 }}</b>
           </template>
         </v-data-table>
       </v-tab-item>
