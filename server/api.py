@@ -5,6 +5,7 @@ from datetime import datetime
 import logging
 from typing import List
 from os import environ
+from functools import reduce
 
 from fastapi import FastAPI, Query, HTTPException
 from starlette.middleware.cors import CORSMiddleware
@@ -87,7 +88,7 @@ async def calc_ghg_emission(electricity_consumption_wth, emission_factor):
     return electricity_consumption_wth * emission_factor
 
 
-def vcu_to_tco2(vcu):
+def _vcu_to_tco2(vcu):
     return vcu * TCO2_IN_ONE_VCU  # tCO2
 
 
@@ -107,6 +108,15 @@ async def create_report(report: ConsumptionReport):
     logger.info(f"{report.dict()}")
     await db.reports.insert_one(report.dict())
     return
+
+
+async def _get_vcu_burned(member_id: int) -> float:
+    member_operations = (await db.ipci.find({"member_id": int(member_id)}, {"_id": 0, "burn_operations": 1}).to_list(length=10000))[0]
+    vcu_burned = 0.0
+    for vcu_ops in member_operations["burn_operations"]:
+        for op in vcu_ops["operations"]:
+            vcu_burned += float(op["value"])
+    return vcu_burned
 
 
 @app.get("/api/v1/members/ghg/balances")
@@ -129,10 +139,11 @@ async def read_ghg_balances(month = Query(..., regex="^\d\d/\d{4}$"), mitigated:
         member_id = record["member_id"]
         actual_consumption = record["consumption"]
         base_consumption = next(r for r in base_report["records"] if r["member_id"] == member_id)["consumption"]  # bad
-        balance = (base_consumption - actual_consumption) * emission_factor
+        balance = (actual_consumption - base_consumption) * emission_factor
         if mitigated:
-            vcu_burned = (await db.ipci.find_one({"member_id": member_id}, {"vcu_burned": 1}))["vcu_burned"] # VCU
-            ghg_mitigated = vcu_burned * vcu_to_tco2(vcu_burned) # tCO2
+            #vcu_burned = (await db.ipci.find_one({"member_id": member_id}, {"vcu_burned": 1}))["vcu_burned"] # VCU
+            vcu_burned = await _get_vcu_burned(member_id)
+            ghg_mitigated = _vcu_to_tco2(vcu_burned) # tCO2
             balance -= ghg_mitigated
         ghg_balances["balances"].append({"member_id": member_id, "balance": balance})
     return ghg_balances
@@ -160,8 +171,12 @@ async def read_financial_balances():
 
 
 @app.get("/api/v1/members/finance/carbon_units_burned")
-async def read_carbon_units_burned():
-    vcu_burned = await db.ipci.find({}, {"member_id": 1, "vcu_burned": 1, "_id": 0}).to_list(length=10000)
+async def read_carbon_units_burned() -> list:
+    #vcu_burned = await db.ipci.find({}, {"member_id": 1, "vcu_burned": 1, "_id": 0}).to_list(length=10000)
+    vcu_burned = list()
+    member_ids = await get_members_ids()
+    for member_id in member_ids:
+        vcu_burned.append({"member_id:": member_id, "vcu_burned": await _get_vcu_burned(member_id)})
     return vcu_burned
 
 

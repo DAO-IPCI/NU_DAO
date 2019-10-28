@@ -123,6 +123,8 @@ def update_carbon_units_burn_operations():
 
         # payment for burn service
         cost = float(Robonomics_Liability_contract.functions.cost().call())
+        if cost == 0.0:  # it's not a burn, maybe an issuing
+            continue
 
         # GCT addr
         vcu_address = "0x0e6C2626C51b74557C0F98A73d2Aa0EA834e98C7"
@@ -130,7 +132,7 @@ def update_carbon_units_burn_operations():
         operation = dict(
                 liability_addr = new_liability_addr,
                 block_number = event.blockNumber,
-                value = cost / GCTNUDAOKZT
+                value = cost / GCTNUDAOKZT / 1000  # ton
             )
 
         member_id = get_member_id_by_ethereum_address(promisee)
