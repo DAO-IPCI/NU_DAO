@@ -45,7 +45,7 @@ export default {
     },
     log: {
       type: 'Type',
-      block_number: 'Block number',
+      block_number: 'Ethereum block',
       member: 'Member',
       transaction_hash: 'Tx',
       value: 'Value',
@@ -95,7 +95,7 @@ export default {
     },
     log: {
       type: 'Тип',
-      block_number: 'Номер блока',
+      block_number: 'Ethereum блок',
       member: 'Участник',
       transaction_hash: 'Транзакция',
       value: 'Кол-во',
