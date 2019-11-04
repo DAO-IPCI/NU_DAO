@@ -23,13 +23,13 @@
           </template>
           <template
             v-slot:item.finance="{ item }"
-          >{{ (item.finance === null) ? '-' : Math.round(item.finance) }}</template>
+          >{{ (item.finance === null) ? '-' : Math.round(item.finance).toLocaleString('ru-KZ') }}</template>
           <template
             v-slot:item.electricity="{ item }"
-          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity) }}</template>
+          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity).toLocaleString('ru-KZ') }}</template>
           <template
             v-slot:item.ghg_emission="{ item }"
-          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission) }}</template>
+          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission).toLocaleString('ru-KZ') }}</template>
           <template v-slot:item.ghg_balance="{ item }">
             <b
               :class="`${getColor(item.ghg_balance)}--text`"
@@ -55,13 +55,13 @@
           </template>
           <template
             v-slot:item.finance="{ item }"
-          >{{ (item.finance === null) ? '-' : Math.round(item.finance) }}</template>
+          >{{ (item.finance === null) ? '-' : Math.round(item.finance).toLocaleString('ru-KZ') }}</template>
           <template
             v-slot:item.electricity="{ item }"
-          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity) }}</template>
+          >{{ (item.electricity === null) ? '-' : Math.round(item.electricity).toLocaleString('ru-KZ') }}</template>
           <template
             v-slot:item.ghg_emission="{ item }"
-          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission) }}</template>
+          >{{ (item.ghg_emission === null) ? '-' : Math.round(item.ghg_emission).toLocaleString('ru-KZ') }}</template>
           <template v-slot:item.ghg_balance="{ item }">
             <b
               :class="`${getColor(item.ghg_balance)}--text`"
