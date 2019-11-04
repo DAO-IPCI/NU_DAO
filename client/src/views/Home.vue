@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col lg="6" cols="12">
-        <MapCard style="height: 100%;" />
+        <News style="height: 100%;" />
       </v-col>
       <v-col lg="6" cols="12">
         <Statistic style="height: 100%;" />
@@ -18,7 +18,7 @@
         <Resume style="height: 100%;" />
       </v-col>
       <v-col lg="6" cols="12">
-        <News style="height: 100%;" />
+        <MapCard style="height: 100%;" />
       </v-col>
     </v-row>
   </v-container>
