@@ -40,7 +40,7 @@ if f"{environ['DATABASE_USER']}" == "":
 else:
     DATABASE_URI = f"{DATABASE_PREFIX}{environ['DATABASE_USER']}:{environ['DATABASE_PWD']}@{DATABASE_ADDRESS}"
     logger.info(f"Connecting to database as {environ['DATABASE_USER']}")
-db = pymongo.MongoClient(DATABASE_URI)[DATABASE_NAME]
+db = pymongo.MongoClient(DATABASE_URI, journal=True)[DATABASE_NAME]
 
 
 if WEB3_WSS_PROVIDER:
