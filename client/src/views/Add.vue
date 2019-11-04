@@ -18,7 +18,7 @@
               <div v-for="(row, i) in rows" :key="i">
                 <v-container>
                   <v-row>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="5">
                       <v-text-field
                         v-model="row.member"
                         :rules="required"
@@ -28,8 +28,13 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="5">
                       <v-text-field v-model="row.consumption" label="Consumption" type="text"></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" md="2">
+                      <br>
+                      kW * h
                     </v-col>
                   </v-row>
                 </v-container>
