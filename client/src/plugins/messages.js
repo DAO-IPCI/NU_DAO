@@ -25,7 +25,7 @@ export default {
       all_rating: 'All time tops',
       ghg: 'CO2 emission, ton',
       electricity: 'Electricity comsumed, kWh',
-      finance: 'Balance, NU DAO KZT',
+      finance: 'Balance, NU DAO tenge',
       carbon_balance: 'Carbon balance, tCO2'
     },
     resume: {
@@ -75,7 +75,7 @@ export default {
       all_rating: 'Рейтинг за все время',
       ghg: 'Выбросов CO2, тонн',
       electricity: 'Потреблено электроэнергии, кВт * ч',
-      finance: 'Баланс, NU DAO KZT',
+      finance: 'Баланс, NU DAO тенге',
       carbon_balance: 'Углеродный баланс, tCO2'
     },
     resume: {
