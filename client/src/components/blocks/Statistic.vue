@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-tabs v-model="tab" :grow="true">
-      <v-tab>{{$t('statistics.current_rating')}}</v-tab>
+      <v-tab>{{$t('statistics.current_rating', { month: $t('statistics.month.' + monthNum) })}}</v-tab>
       <v-tab>{{$t('statistics.all_rating')}}</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
@@ -74,11 +74,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import i18n from "../../plugins/i18n";
 
 export default {
   computed: {
+    ...mapState("data", ["monthNum"]),
     ...mapGetters("data", ["current", "all"])
   },
   data: () => ({

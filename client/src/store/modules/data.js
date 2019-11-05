@@ -12,6 +12,7 @@ date = month + '/' + d.getFullYear();
 // initial state
 const state = {
   month: date,
+  monthNum: month,
   members: [
     // {
     //   id: 1,
